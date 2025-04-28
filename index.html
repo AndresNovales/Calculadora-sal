@@ -1,293 +1,369 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/juanwinograd/CalculadoraSalarial/refs/heads/main/favicon.ico">
-    <div class="header">
-        <img src="https://ute.org.ar/wp-content/uploads/2019/09/ute-logo.png" alt="Logo UTE" width="150" style="filter: brightness(0) invert(1);"> <!-- Logo en blanco -->
-        <h1>Calculadora Salarial</h1>
-      </div>
+    <title>Calculadora Salarial - UTE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-       /* Reset y tipografía */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif; /* Tipografía de UTE */
-  }
-  
-  body {
-    background-color: #F5F5F5;
-    color: #000000; /* Texto negro */
-  }
-  
-  /* Barra superior (celeste como el logo) */
-  .header {
-    background-color: #00AEEF; /* Celeste UTE */
-    color: white;
-    padding: 1.5rem 0;
-    text-align: center;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  .header h1 {
-    font-size: 2rem;
-    font-weight: 700;
-  }
-  
-  /* Contenedor de la calculadora */
-  .calculadora {
-    max-width: 600px;
-    margin: 3rem auto;
-    padding: 2rem;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* Inputs */
-  input {
-    width: 100%;
-    padding: 0.75rem;
-    margin: 0.8rem 0;
-    border: 1px solid #DDDDDD;
-    border-radius: 6px;
-    font-size: 1rem;
-  }
-  
-  /* Botones (celeste UTE) */
-  button {
-    background-color: #00AEEF;
-    color: white;
-    border: none;
-    padding: 0.8rem 1.5rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: bold;
-    transition: background 0.3s;
-    width: 100%;
-    margin-top: 1rem;
-  }
-  
-  button:hover {
-    background-color: #0085C3; /* Celeste oscuro al pasar el mouse */
-  }
-  
-  /* Resultados */
-  .resultado {
-    margin-top: 1.5rem;
-    padding: 1.2rem;
-    background-color: #F9F9F9;
-    border-left: 5px solid #00AEEF; /* Borde celeste */
-    font-size: 1.1rem;
-  }
-  @media (max-width: 768px) {
-    .header img { width: 100px; }
-    .calculadora { margin: 1rem; padding: 1rem; }
-main  }
+        :root {
+            --ute-celeste: #00AEEF;
+            --ute-celeste-oscuro: #0085C3;
+            --ute-blanco: #FFFFFF;
+            --ute-negro: #000000;
+            --ute-gris: #F5F5F5;
+            --ute-gris-oscuro: #DDDDDD;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--ute-gris);
+            color: var(--ute-negro);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .header {
+            background-color: var(--ute-celeste);
+            color: var(--ute-blanco);
+            padding: 20px 0;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            margin: 10px 0 0;
+            font-size: 28px;
+        }
+        
+        .calc {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        @media (max-width: 768px) {
+            .calc {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+        
+        #calculadora, #perdida {
+            background: var(--ute-blanco);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin: 15px;
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        h1 {
+            color: var(--ute-celeste);
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .tdForm {
+            font-size: 16px;
+        }
+        
+        .tdForm select, 
+        .tdForm input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid var(--ute-gris-oscuro);
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: var(--ute-blanco);
+        }
+        
+        .tdForm input[type="number"]::placeholder {
+            color: #666;
+        }
+        
+        .tdForm input[type="checkbox"] {
+            height: 20px;
+            width: 20px;
+            vertical-align: middle;
+            margin: 10px 5px;
+        }
+        
+        button {
+            background-color: var(--ute-celeste);
+            color: var(--ute-blanco);
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: 500;
+            margin: 5px 0;
+        }
+        
+        button:hover {
+            background-color: var(--ute-celeste-oscuro);
+        }
+        
+        .resultado {
+            font-size: 18px;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: var(--ute-gris);
+            border-left: 4px solid var(--ute-celeste);
+            line-height: 1.8;
+        }
+        
+        .resultado .alerta {
+            font-weight: bold;
+            color: #d9534f;
+        }
+        
+        .oculto0, .oculto1 {
+            display: none;
+        }
+        
+        .detalle {
+            border-left: 4px solid var(--ute-celeste);
+            background-color: var(--ute-gris);
+            list-style-type: none;
+            padding: 15px;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-top: 15px;
+        }
+        
+        .sumcargo {
+            margin: 15px 0;
+        }
+        
+        .sumcargo button {
+            padding: 8px 16px;
+            border-radius: 50%;
+            font-size: 20px;
+        }
+        
+        .formu-asignaciones {
+            border-left: 4px solid var(--ute-celeste);
+            background-color: var(--ute-gris);
+            padding: 15px;
+            margin-top: 15px;
+            display: none;
+        }
+        
+        label {
+            display: inline-block;
+            margin: 5px 0;
+            font-weight: 500;
+        }
+        
+        #textocargo {
+            margin-left: 10px;
+            vertical-align: middle;
+        }
     </style>
-    
 </head>
 <body>
-    <!--img src="banner-prueba.jpg" alt="Bandera Ademys" style="width:100%; height:auto;"-->
-    <div class="calc">
-    <div id="calculadora">
-        <h1>Calculadora salarial</h1>
-        <p>Ingresá los datos correspondientes para calcular tu sueldo actual (abril 2025).</p>
-        <form class="tdForm" id="formu0" onsubmit="mostrar(event)">
-
-            <select id="privada" onchange="elegir_privada()">
-                <option selected="selected">Escuela pública</option>
-                <option>Escuela privada</option>
-            </select>
-            <select id="area0" onchange="elegir_area(event)">
-                <option>Área</option>
-                <option value="supervision">Supervisión</option>
-                <option value="jornada">Inicial y primaria</option>			
-                <option value="especial">Especial</option>
-                <option value="adultos">Adultos</option>
-                <option value="media">Media/Técnica/Artística</option>
-                <option value="cens">CENS</option>
-                <option value="terciaria">Terciaria</option>
-                <option value="horas">Hora Media/Curricular</option>
-            </select>
-
-            <select class="oculto0" id="supervision0" onchange="elegir_supervisor(event)">
-                <option value=0>Cargo</option>
-                <option value=3973>Supervisorx</option>
-                <option value=3723>Supervisorx Adjunto</option>
-            </select>
-        
-            <select class="oculto0" id="jornada0" onchange="elegir_jornada(event)">
-                <option value="">Jornada</option>
-                <option value="JS">Jornada Simple</option>
-                <option value="JC">Jornada Completa</option>
-            </select>
-        
-            <select class="oculto0" id="JS0" onchange="elegir_cargo(event)">
-                <option value=0>Cargo</option>
-                <option value=1783>Directorx (J.S)</option>
-                <option value=1545>Vicedirectorx (J.S.)</option>
-                <option value=1307>M. Secretarix / (J.S.)</option>
-                <option value=1135>M. de Grado (J.S.)</option>
-                <option value=1135>M. de programa</option>
-                <option value=1135>M. Bibliotecaria</option>
-                <option value=1135>M. de Sección (J.S.)</option>
-                <option value=1368>M. de Sección Turno Extendido</option>			
-                <option value=982>Maestra Celadora (Inicial- J.S.)</option>
-                <option value=1307>EOE JS</option>
-            </select>
-        
-            <select class="oculto0" id="JC0" onchange="elegir_cargo(event)">
-                <option value=0>Cargo</option>
-                <option value=3125>Directorx (J.C.)</option>
-                <option value=2667>Vicedirectorx (J.C.)</option>
-                <option value=2359>M. Secretarix (J.C.)</option>
-                <option value=2070>M. de Grado (J.C.)</option>
-                <option value=2350>M. G (J.C. Intensificada) </option>
-                <option value=2462>M. G (J.C. int. en Ciencias) </option>
-                <option value=2270>M. de Sección (T.D.)</option>
-                <option value=1963>Maestra Celadora (Inicial-T.D.)</option>
-                <option value=2359>EOE JC</option>
-            </select>
-        
-            <select class="oculto0" id="adultos0" onchange="elegir_adultos(event)">
-                <option value=0>Cargo</option>
-                <option value=1187>Directorx Adultos</option>
-                <option value=960>M. Secretarix Adultos</option>
-                <option value=832>Maestrx de Ciclo Adultos</option>
-                <option value=560>Materias complementarias (10hs)</option>
-            </select>
-        
-            <select class="oculto0" id="especial0" onchange="elegir_especial(event)">
-                <option value=0>Cargo</option>
-                <option value=3125>Directorx (J.C.)</option>
-                <option value=2667>Vicedirectorx (J.C.)</option>
-                <option value=2359>M. Secretarix (J.C.)</option>            
-                <option value=1358>Asistente Celadorx (DM-40 hs.)</option>
-                <option value=2070>M. de Grado / MAPED (J.C.)</option>
-                <option value=1135>M. de Grado / MAPED (J.S.)</option>
-                <option value=959.5>Preceptorx EE</option>            
-                <option value=815>Asistente Celadorx (DM-24 hs)</option>
-                <option value=56>Maestrx de Materias Especiales </option>
-                <option value=56>Intérprete de Lengua de Señas</option>
-            </select>
-        
-            <select class="oculto0" id="media0" onchange="elegir_media(event)">
-                <option value=0>Cargo</option>
-                <option value=3128>Directorx / Rectorx (40hs)</option>
-                <option value=3128>Directorx / Rectorx (25hs)</option>
-                <option value=2669>Vicedirectorx / Vicerrectorx</option>      
-                <option value=2421>Jefx General de Taller (Artística)</option>
-                <option value=2415>Regente</option>
-                <option value=2215>Subregente </option>      
-                <option value=2070>Secretarix</option>
-                <option value=1451>Prosecretarix</option>
-                <option value=1135>Jefe de Preceptores</option>
-                <option value=1064>Subjefe de Precepetores</option>
-                <option value=952>Preceptorx</option>
-                <option value=1135>Bibliotecarix</option>
-                <option value=1942>Asesorx Pedagógico</option>
-                <option value=1222>Jefx de laboratorio</option>
-                <option value=1135>MEP/Maestrx de taller</option>
-                <option value=929>ATTP</option>
-                <option value=1008>Psicólogx / Psicopedagogx</option>
-                <option value=825>Ayudante de Cátedra</option>
-                <option value=65>Profesrorx Hora Cátedra</option>
-            </select>
-        
-            <select class="oculto0" id="cens0" onchange="elegir_cens(event)">
-                <option value=0>Cargo</option>
-                <option value=2503>Directorx CENS</option>
-                <option value=1656>Secretarix CENS</option>
-                <option value=847>Preceptorx CENS</option>
-            </select>
-        
-            <select class="oculto0" id="terciaria0" onchange="elegir_terciaria(event)">
-                <option value=0>Cargo</option>
-                <option value=3422>Rectorx</option>
-                <option value=2874>Vicerrectorx</option>
-                <option value=2555>Regentx</option>
-                <option value=2500>Secretarix</option>
-                <option value=1684>Prosecretarix</option>
-                <option value=952>Preceptorx - Bedel</option>
-                <option value=864>AyTP</option>
-                <option value=1135>Bibliotecarix</option>
-                <option value=65>Profesrorx Hora Cátedra</option>
-            </select>
-        
-            <input class="oculto0" placeholder="Horas" type="number" id="horas0" max="72" min="1" onchange="elegir_horas(event)">
-        
-            <br>
-        
-            <select id="antiguedad" onchange="elegir_antiguedad()">
-                <option value=-1> Antigüedad</option>
-                <option value=0>0% (0 años)</option>
-                <option value=0.3>30% (1 año)</option>
-                <option value=0.4>40% (4 años)</option>
-                <option value=0.5>50% (7 años)</option>
-                <option value=0.6>60% (10 años)</option>
-                <option value=0.7>70% (12 años)</option>
-                <option value=0.8>80% (14 años)</option>
-                <option value=0.9>90% (16 años)</option>
-                <option value=1>100% (18 años)</option>
-                <option value=1.1>110% (20 años)</option>
-                <option value=1.2>120% (22 años)</option>
-            </select>
-
-            <label for="afiliado"> Afiliadx </label>
-            <input type="checkbox" id="afiliado" onchange="elegir_afiliado()">
-            
-            <label for="presentismo"> Presentismo </label>
-            <input type="checkbox" id="presentismo" checked="True" onchange="elegir_presentismo()">
-            
-            <!--div style ="background-color:#f1f1f1; padding: 2px 20px; ">
-                <label for="privada"> Escuela privada </label>
-                <input type="checkbox" id="privada" onchange="elegir_privada()">
-            </div-->
-        </form>
-        
-        <div class="sumcargo">
-            <button type="button" id="botoncargo" onclick="agregar_cargo()">+</button>
-            <label id="textocargo" for="botoncargo">Agregar otro cargo</label>
-        </div>
-
-        <br>
-
-        <button type="button" id="botonasignaciones" onclick="agregar_asignaciones()">Asignaciones familiares</button>	
-            <form class="tdForm formu-asignaciones" id="asignaciones" onchange="elegir_asignaciones()">
-                <label for="hijo"> Hijos/as: </label>
-                <input type="number" min="0" max="9" id="hijo" value="0">
-                <label for="hijoDiscapacidad"> Hijos/as con discapacidad: </label>
-                <input type="number" min="0" max="9" id="hijoDiscapacidad" value="0">
-                <label for="embarazo"> Embarazo: </label>
-                <input type="checkbox" name="check_asignaciones" value="embarazo" id="embarazo">
-                <label for="conviviente"> Cónyuge o conviviente: </label>
-                <input type="checkbox" name="check_asignaciones" value="conviviente" id="conviviente">
-            </form>
-        
-        <div id="resultado" class="resultado">
-            Sueldo bruto: <span id="bruto" ></span>
-        <br>
-        <br>
-            <b>Sueldo en mano: <span id="neto" ></span></b>
-        </div>
-        <br>
-        <button type="button" id="botondetalle" onclick="activar_detalle()">Mostrar detalle</button>	
+    <div class="header">
+        <img src="https://ute.org.ar/wp-content/uploads/2019/09/ute-logo.png" alt="Logo UTE" height="60">
+        <h1>Calculadora Salarial</h1>
     </div>
+    
+    <div class="calc">
+        <div id="calculadora">
+            <p>Ingresá los datos correspondientes para calcular tu sueldo actual (abril 2025).</p>
+            <form class="tdForm" id="formu0" onsubmit="mostrar(event)">
 
-    <div id="perdida">
-        <h1>Salario vs. Inflación</h1>
-        <!--p>Elegí un mes para comparar.</p-->
-        <form id="contenedor-mes" class="tdForm"></form>
-        <div id="resultado-perdida" class="resultado">
+                <select id="privada" onchange="elegir_privada()">
+                    <option selected="selected">Escuela pública</option>
+                    <option>Escuela privada</option>
+                </select>
+                
+                <select id="area0" onchange="elegir_area(event)">
+                    <option>Área</option>
+                    <option value="supervision">Supervisión</option>
+                    <option value="jornada">Inicial y primaria</option>			
+                    <option value="especial">Especial</option>
+                    <option value="adultos">Adultos</option>
+                    <option value="media">Media/Técnica/Artística</option>
+                    <option value="cens">CENS</option>
+                    <option value="terciaria">Terciaria</option>
+                    <option value="horas">Hora Media/Curricular</option>
+                </select>
+
+                <select class="oculto0" id="supervision0" onchange="elegir_supervisor(event)">
+                    <option value=0>Cargo</option>
+                    <option value=3973>Supervisorx</option>
+                    <option value=3723>Supervisorx Adjunto</option>
+                </select>
+            
+                <select class="oculto0" id="jornada0" onchange="elegir_jornada(event)">
+                    <option value="">Jornada</option>
+                    <option value="JS">Jornada Simple</option>
+                    <option value="JC">Jornada Completa</option>
+                </select>
+            
+                <select class="oculto0" id="JS0" onchange="elegir_cargo(event)">
+                    <option value=0>Cargo</option>
+                    <option value=1783>Directorx (J.S)</option>
+                    <option value=1545>Vicedirectorx (J.S.)</option>
+                    <option value=1307>M. Secretarix / (J.S.)</option>
+                    <option value=1135>M. de Grado (J.S.)</option>
+                    <option value=1135>M. de programa</option>
+                    <option value=1135>M. Bibliotecaria</option>
+                    <option value=1135>M. de Sección (J.S.)</option>
+                    <option value=1368>M. de Sección Turno Extendido</option>			
+                    <option value=982>Maestra Celadora (Inicial- J.S.)</option>
+                    <option value=1307>EOE JS</option>
+                </select>
+            
+                <select class="oculto0" id="JC0" onchange="elegir_cargo(event)">
+                    <option value=0>Cargo</option>
+                    <option value=3125>Directorx (J.C.)</option>
+                    <option value=2667>Vicedirectorx (J.C.)</option>
+                    <option value=2359>M. Secretarix (J.C.)</option>
+                    <option value=2070>M. de Grado (J.C.)</option>
+                    <option value=2350>M. G (J.C. Intensificada) </option>
+                    <option value=2462>M. G (J.C. int. en Ciencias) </option>
+                    <option value=2270>M. de Sección (T.D.)</option>
+                    <option value=1963>Maestra Celadora (Inicial-T.D.)</option>
+                    <option value=2359>EOE JC</option>
+                </select>
+            
+                <select class="oculto0" id="adultos0" onchange="elegir_adultos(event)">
+                    <option value=0>Cargo</option>
+                    <option value=1187>Directorx Adultos</option>
+                    <option value=960>M. Secretarix Adultos</option>
+                    <option value=832>Maestrx de Ciclo Adultos</option>
+                    <option value=560>Materias complementarias (10hs)</option>
+                </select>
+            
+                <select class="oculto0" id="especial0" onchange="elegir_especial(event)">
+                    <option value=0>Cargo</option>
+                    <option value=3125>Directorx (J.C.)</option>
+                    <option value=2667>Vicedirectorx (J.C.)</option>
+                    <option value=2359>M. Secretarix (J.C.)</option>            
+                    <option value=1358>Asistente Celadorx (DM-40 hs.)</option>
+                    <option value=2070>M. de Grado / MAPED (J.C.)</option>
+                    <option value=1135>M. de Grado / MAPED (J.S.)</option>
+                    <option value=959.5>Preceptorx EE</option>            
+                    <option value=815>Asistente Celadorx (DM-24 hs)</option>
+                    <option value=56>Maestrx de Materias Especiales </option>
+                    <option value=56>Intérprete de Lengua de Señas</option>
+                </select>
+            
+                <select class="oculto0" id="media0" onchange="elegir_media(event)">
+                    <option value=0>Cargo</option>
+                    <option value=3128>Directorx / Rectorx (40hs)</option>
+                    <option value=3128>Directorx / Rectorx (25hs)</option>
+                    <option value=2669>Vicedirectorx / Vicerrectorx</option>      
+                    <option value=2421>Jefx General de Taller (Artística)</option>
+                    <option value=2415>Regente</option>
+                    <option value=2215>Subregente </option>      
+                    <option value=2070>Secretarix</option>
+                    <option value=1451>Prosecretarix</option>
+                    <option value=1135>Jefe de Preceptores</option>
+                    <option value=1064>Subjefe de Precepetores</option>
+                    <option value=952>Preceptorx</option>
+                    <option value=1135>Bibliotecarix</option>
+                    <option value=1942>Asesorx Pedagógico</option>
+                    <option value=1222>Jefx de laboratorio</option>
+                    <option value=1135>MEP/Maestrx de taller</option>
+                    <option value=929>ATTP</option>
+                    <option value=1008>Psicólogx / Psicopedagogx</option>
+                    <option value=825>Ayudante de Cátedra</option>
+                    <option value=65>Profesrorx Hora Cátedra</option>
+                </select>
+            
+                <select class="oculto0" id="cens0" onchange="elegir_cens(event)">
+                    <option value=0>Cargo</option>
+                    <option value=2503>Directorx CENS</option>
+                    <option value=1656>Secretarix CENS</option>
+                    <option value=847>Preceptorx CENS</option>
+                </select>
+            
+                <select class="oculto0" id="terciaria0" onchange="elegir_terciaria(event)">
+                    <option value=0>Cargo</option>
+                    <option value=3422>Rectorx</option>
+                    <option value=2874>Vicerrectorx</option>
+                    <option value=2555>Regentx</option>
+                    <option value=2500>Secretarix</option>
+                    <option value=1684>Prosecretarix</option>
+                    <option value=952>Preceptorx - Bedel</option>
+                    <option value=864>AyTP</option>
+                    <option value=1135>Bibliotecarix</option>
+                    <option value=65>Profesrorx Hora Cátedra</option>
+                </select>
+            
+                <input class="oculto0" placeholder="Horas" type="number" id="horas0" max="72" min="1" onchange="elegir_horas(event)">
+            
+                <br>
+            
+                <select id="antiguedad" onchange="elegir_antiguedad()">
+                    <option value=-1> Antigüedad</option>
+                    <option value=0>0% (0 años)</option>
+                    <option value=0.3>30% (1 año)</option>
+                    <option value=0.4>40% (4 años)</option>
+                    <option value=0.5>50% (7 años)</option>
+                    <option value=0.6>60% (10 años)</option>
+                    <option value=0.7>70% (12 años)</option>
+                    <option value=0.8>80% (14 años)</option>
+                    <option value=0.9>90% (16 años)</option>
+                    <option value=1>100% (18 años)</option>
+                    <option value=1.1>110% (20 años)</option>
+                    <option value=1.2>120% (22 años)</option>
+                </select>
+
+                <div style="margin: 15px 0;">
+                    <label for="afiliado"> Afiliadx </label>
+                    <input type="checkbox" id="afiliado" onchange="elegir_afiliado()">
+                    
+                    <label for="presentismo"> Presentismo </label>
+                    <input type="checkbox" id="presentismo" checked="True" onchange="elegir_presentismo()">
+                </div>
+            </form>
+            
+            <div class="sumcargo">
+                <button type="button" id="botoncargo" onclick="agregar_cargo()">+</button>
+                <label id="textocargo" for="botoncargo">Agregar otro cargo</label>
+            </div>
+
+            <button type="button" id="botonasignaciones" onclick="agregar_asignaciones()">Asignaciones familiares</button>	
+                <form class="tdForm formu-asignaciones" id="asignaciones" onchange="elegir_asignaciones()">
+                    <label for="hijo"> Hijos/as: </label>
+                    <input type="number" min="0" max="9" id="hijo" value="0">
+                    <label for="hijoDiscapacidad"> Hijos/as con discapacidad: </label>
+                    <input type="number" min="0" max="9" id="hijoDiscapacidad" value="0">
+                    <label for="embarazo"> Embarazo: </label>
+                    <input type="checkbox" name="check_asignaciones" value="embarazo" id="embarazo">
+                    <label for="conviviente"> Cónyuge o conviviente: </label>
+                    <input type="checkbox" name="check_asignaciones" value="conviviente" id="conviviente">
+                </form>
+            
+            <div id="resultado" class="resultado">
+                Sueldo bruto: <span id="bruto"></span>
+            <br>
+            <br>
+                <b>Sueldo en mano: <span id="neto"></span></b>
+            </div>
+            <br>
+            <button type="button" id="botondetalle" onclick="activar_detalle()">Mostrar detalle</button>	
+        </div>
+
+        <div id="perdida">
+            <h1>Salario vs. Inflación</h1>
+            <form id="contenedor-mes" class="tdForm"></form>
+            <div id="resultado-perdida" class="resultado">
+        </div> 
     </div> 
-</div> 
 
     <script src="multidocente.js"></script>
 </body>
