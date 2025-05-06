@@ -38,30 +38,20 @@
             font-size: 28px;
         }
         
-        .calc {
+        .container {
             display: flex;
-            flex-direction: row;
             justify-content: center;
             padding: 20px;
-            max-width: 1200px;
+            max-width: 600px;
             margin: 0 auto;
         }
         
-        @media (max-width: 768px) {
-            .calc {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-        
-        #calculadora, #perdida {
+        #calculadora {
             background: var(--ute-blanco);
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             padding: 25px;
-            margin: 15px;
             width: 100%;
-            max-width: 500px;
         }
         
         h1 {
@@ -85,10 +75,6 @@
             background-color: var(--ute-blanco);
         }
         
-        .tdForm input[type="number"]::placeholder {
-            color: #666;
-        }
-        
         .tdForm input[type="checkbox"] {
             height: 20px;
             width: 20px;
@@ -107,6 +93,7 @@
             transition: background-color 0.3s;
             font-weight: 500;
             margin: 5px 0;
+            width: 100%;
         }
         
         button:hover {
@@ -122,40 +109,7 @@
             line-height: 1.8;
         }
         
-        .resultado .alerta {
-            font-weight: bold;
-            color: #d9534f;
-        }
-        
-        .oculto0, .oculto1 {
-            display: none;
-        }
-        
-        .detalle {
-            border-left: 4px solid var(--ute-celeste);
-            background-color: var(--ute-gris);
-            list-style-type: none;
-            padding: 15px;
-            font-size: 16px;
-            line-height: 1.6;
-            margin-top: 15px;
-        }
-        
-        .sumcargo {
-            margin: 15px 0;
-        }
-        
-        .sumcargo button {
-            padding: 8px 16px;
-            border-radius: 50%;
-            font-size: 20px;
-        }
-        
-        .formu-asignaciones {
-            border-left: 4px solid var(--ute-celeste);
-            background-color: var(--ute-gris);
-            padding: 15px;
-            margin-top: 15px;
+        .oculto0 {
             display: none;
         }
         
@@ -163,11 +117,6 @@
             display: inline-block;
             margin: 5px 0;
             font-weight: 500;
-        }
-        
-        #textocargo {
-            margin-left: 10px;
-            vertical-align: middle;
         }
     </style>
 </head>
@@ -177,9 +126,9 @@
         <h1>Calculadora Salarial</h1>
     </div>
     
-    <div class="calc">
+    <div class="container">
         <div id="calculadora">
-            <p>Ingresá los datos correspondientes para calcular tu sueldo actual (abril 2025).</p>
+            <p>Ingresá los datos correspondientes para calcular tu sueldo actual.</p>
             <form class="tdForm" id="formu0" onsubmit="mostrar(event)">
 
                 <select id="privada" onchange="elegir_privada()">
@@ -323,47 +272,21 @@
                 </select>
 
                 <div style="margin: 15px 0;">
-                    <label for="afiliado"> Afiliadx </label>
-                    <input type="checkbox" id="afiliado" onchange="elegir_afiliado()">
-                    
                     <label for="presentismo"> Presentismo </label>
                     <input type="checkbox" id="presentismo" checked="True" onchange="elegir_presentismo()">
                 </div>
             </form>
             
-            <div class="sumcargo">
-                <button type="button" id="botoncargo" onclick="agregar_cargo()">+</button>
-                <label id="textocargo" for="botoncargo">Agregar otro cargo</label>
-            </div>
-
-            <button type="button" id="botonasignaciones" onclick="agregar_asignaciones()">Asignaciones familiares</button>	
-                <form class="tdForm formu-asignaciones" id="asignaciones" onchange="elegir_asignaciones()">
-                    <label for="hijo"> Hijos/as: </label>
-                    <input type="number" min="0" max="9" id="hijo" value="0">
-                    <label for="hijoDiscapacidad"> Hijos/as con discapacidad: </label>
-                    <input type="number" min="0" max="9" id="hijoDiscapacidad" value="0">
-                    <label for="embarazo"> Embarazo: </label>
-                    <input type="checkbox" name="check_asignaciones" value="embarazo" id="embarazo">
-                    <label for="conviviente"> Cónyuge o conviviente: </label>
-                    <input type="checkbox" name="check_asignaciones" value="conviviente" id="conviviente">
-                </form>
-            
             <div id="resultado" class="resultado">
                 Sueldo bruto: <span id="bruto"></span>
-            <br>
-            <br>
+                <br>
+                <br>
                 <b>Sueldo en mano: <span id="neto"></span></b>
             </div>
             <br>
             <button type="button" id="botondetalle" onclick="activar_detalle()">Mostrar detalle</button>	
         </div>
-
-        <div id="perdida">
-            <h1>Salario vs. Inflación</h1>
-            <form id="contenedor-mes" class="tdForm"></form>
-            <div id="resultado-perdida" class="resultado">
-        </div> 
-    </div> 
+    </div>
 
     <script src="multidocente.js"></script>
 </body>
