@@ -166,7 +166,7 @@ class Docente {
         // cargo.salarioMinimo = cargo.salarioMinimo + cargo.jerarquizacion*1.1*Rem;
 
         let horasParaDec483 = Math.min(cargo.horas, 38);
-        cargo.antiguedad_dec483 = this.dec483*this.antiguedad;
+        cargo.antiguedad_dec483 = horasParaDec483 * Dec483 * (antiguedad / 100);       
         cargo.antiguedadBasico = (cargo.basico + cargo.jerarquizacion + cargo.dedicacionExclusiva)*this.antiguedad;
     }
 
