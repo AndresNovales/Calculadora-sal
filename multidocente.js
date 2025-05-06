@@ -13,9 +13,7 @@ const MontosAsignaciones = {
             nacimientoDiscapacidad : [133,133,133,3000],
             adopcion : [629,629,629,3600],
             adopcionDiscapacidad : [629,629,629,10800],
-            embarazo : [61,37,19,270],git add .
-            git commit -m "Eliminadas secciones de inflación, afiliación y asignaciones familiares"
-            git push origin main
+            embarazo : [61,37,19,270],
             conviviente : [22,22,22,100],
             hijo : [61,37,19,270],
             hijoDiscapacidad : [208,132,132,3000],
