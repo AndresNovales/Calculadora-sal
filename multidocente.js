@@ -141,7 +141,7 @@ class Docente {
         // horas    	   	
         else if (cargo.jornada == "HorasM") {
             cargo.dec483 = item_horas(cargo.horas,38,Dec483);
-            cargo.antiguedad_dec483 = cargo.horas * Dec483 * (docente.antiguedad / 100);
+            cargo.antiguedad_dec483 = cargo.horas * Dec483 * this.antiguedad
             cargo.mdm = item_horas(cargo.horas,38,MDM);
             cargo.sumaFija = item_horas(cargo.horas,38,SumaFija);
             cargo.adicionalEspecial = item_horas(cargo.horas,30,AdicionalEspecial);
@@ -151,7 +151,7 @@ class Docente {
         }
         else if (cargo.jornada == "HorasT") {
             cargo.dec483 = item_horas(cargo.horas,38,Dec483);
-            cargo.antiguedad_dec483 = cargo.horas * Dec483 * (docente.antiguedad / 100);
+            cargo.antiguedad_dec483 = cargo.horas * Dec483 * this.antiguedad
             cargo.mdm = item_horas(cargo.horas,38,MDM);
             cargo.sumaFija = item_horas(cargo.horas,38,SumaFija);
             cargo.adicionalEspecial = item_horas(cargo.horas,24,AdicionalEspecial);
