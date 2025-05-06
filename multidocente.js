@@ -4,9 +4,6 @@ const DescuentoOS = 0.06, DescuentoJubilacion = 0.13, DescuentoFCompensador = 0.
 var Rem = 1 - (DescuentoOS + DescuentoJubilacion + DescuentoFCompensador);
 var DescuentoAdemys = 0, DescuentoPresentismo = 0;
 
-function item_antiguedad(horas, tope, monto_unitario, antiguedad) {
-    return Math.min(horas, tope) * monto_unitario * (antiguedad / 100);
-}
 // const AumentoAsignaciones = 1.2375*1.25625*1.5641*1.5*1.8666667*1.68;
 // const ValorUMAF = 50*AumentoAsignaciones;
 const TopesAsignaciones = [60000,87500,114500];
@@ -140,9 +137,7 @@ class Docente {
         }
         // horas    	   	
         else if (cargo.jornada == "HorasM") {
-            let horasDec483 = Math.min(cargo.horas, 38);
-cargo.dec483 = horasDec483 * Dec483;
-cargo.antiguedad_dec483 = horasDec483 * Dec483 * (docente.antiguedad / 100);
+            cargo.dec483 = item_horas(cargo.horas,38,Dec483);
             cargo.mdm = item_horas(cargo.horas,38,MDM);
             cargo.sumaFija = item_horas(cargo.horas,38,SumaFija);
             cargo.adicionalEspecial = item_horas(cargo.horas,30,AdicionalEspecial);
@@ -151,9 +146,7 @@ cargo.antiguedad_dec483 = horasDec483 * Dec483 * (docente.antiguedad / 100);
             cargo.salarioMinimo = item_horas(cargo.horas,40,SalarioMinimo);
         }
         else if (cargo.jornada == "HorasT") {
-            let horasDec483 = Math.min(cargo.horas, 38);
-cargo.dec483 = horasDec483 * Dec483;
-cargo.antiguedad_dec483 = horasDec483 * Dec483 * (docente.antiguedad / 100);
+            cargo.dec483 = item_horas(cargo.horas,38,Dec483);
             cargo.mdm = item_horas(cargo.horas,38,MDM);
             cargo.sumaFija = item_horas(cargo.horas,38,SumaFija);
             cargo.adicionalEspecial = item_horas(cargo.horas,24,AdicionalEspecial);
@@ -172,7 +165,9 @@ cargo.antiguedad_dec483 = horasDec483 * Dec483 * (docente.antiguedad / 100);
         //Jerarquizacion y su proporcional del presentismo no cuentan para cmg
         // cargo.salarioMinimo = cargo.salarioMinimo + cargo.jerarquizacion*1.1*Rem;
 
-            cargo.antiguedadBasico = (cargo.basico + cargo.jerarquizacion + cargo.dedicacionExclusiva)*this.antiguedad;
+
+        cargo.antiguedadBasico = (cargo.basico + cargo.jerarquizacion + cargo.dedicacionExclusiva)*this.antiguedad;
+        cargo.antiguedadDec483 = cargo.dec483*this.antiguedad
     }
 
     //calcula el sueldo a partir de los items
