@@ -165,9 +165,9 @@ class Docente {
         //Jerarquizacion y su proporcional del presentismo no cuentan para cmg
         // cargo.salarioMinimo = cargo.salarioMinimo + cargo.jerarquizacion*1.1*Rem;
 
-
+        let horasParaDec483 = Math.min(cargo.horas, 38);
+        cargo.antiguedad_dec483 = horasParaDec483*Dec483 *(antiguedad / 100);
         cargo.antiguedadBasico = (cargo.basico + cargo.jerarquizacion + cargo.dedicacionExclusiva)*this.antiguedad;
-        cargo.antiguedadDec483 = cargo.dec483*this.antiguedad
     }
 
     //calcula el sueldo a partir de los items
