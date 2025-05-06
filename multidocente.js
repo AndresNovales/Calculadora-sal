@@ -31,25 +31,7 @@ var asignaciones = {
             hijoDiscapacidad : 0
 };
 
-function item_horas_con_antiguedad(horas, max_horas, valor, antiguedad_porcentaje) {
-    const valor_base = item_horas(horas, max_horas, valor);
-    const valor_antiguedad = valor_base * (antiguedad_porcentaje / 100);
-    
-    // Si superamos las horas máximas, congelamos ambos valores
-    if (horas > max_horas) {
-        return {
-            base: valor_base,
-            antiguedad: valor_antiguedad,
-            total: valor_base + valor_antiguedad
-        };
-    } else {
-        return {
-            base: valor_base,
-            antiguedad: valor_antiguedad,
-            total: valor_base + valor_antiguedad
-        };
-    }
-}
+
 //Calcula cuanto cobras de un item por hs horas cátedra
 function item_horas(hs, maxHoras, tope) {
     var item;
@@ -154,15 +136,9 @@ class Docente {
                 cargo.sumaFija = SumaFija*proporcion;
             }
         }
-       
         // horas    	   	
         else if (cargo.jornada == "HorasM") {
-            cargo.dec483 = dec483_data.total;
-            cargo.dec483_base = dec483_data.base;
-            cargo.dec483_antiguedad = dec483_data.antiguedad;const dec483_data = item_horas_con_antiguedad(cargo.horas, 38, Dec483, cargo.antiguedadPorcentaje);
-            cargo.dec483 = dec483_data.total;
-            cargo.dec483_base = dec483_data.base;
-            cargo.dec483_antiguedad = dec483_data.antiguedad;
+            cargo.dec483 = item_horas(cargo.horas,38,Dec483);
             cargo.mdm = item_horas(cargo.horas,38,MDM);
             cargo.sumaFija = item_horas(cargo.horas,38,SumaFija);
             cargo.adicionalEspecial = item_horas(cargo.horas,30,AdicionalEspecial);
@@ -171,12 +147,7 @@ class Docente {
             cargo.salarioMinimo = item_horas(cargo.horas,40,SalarioMinimo);
         }
         else if (cargo.jornada == "HorasT") {
-            cargo.dec483 = dec483_data.total;
-            cargo.dec483_base = dec483_data.base;
-            cargo.dec483_antiguedad = dec483_data.antiguedad;const dec483_data = item_horas_con_antiguedad(cargo.horas, 38, Dec483, cargo.antiguedadPorcentaje);
-            cargo.dec483 = dec483_data.total;
-            cargo.dec483_base = dec483_data.base;
-            cargo.dec483_antiguedad = dec483_data.antiguedad;
+            cargo.dec483 = item_horas(cargo.horas,38,Dec483);
             cargo.mdm = item_horas(cargo.horas,38,MDM);
             cargo.sumaFija = item_horas(cargo.horas,38,SumaFija);
             cargo.adicionalEspecial = item_horas(cargo.horas,24,AdicionalEspecial);
