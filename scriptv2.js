@@ -2,7 +2,7 @@ const MES_ACTUAL = "abril 2025";
 const ULTIMO_IPC = "marzo 2025";
 const DescuentoOS = 0.06, DescuentoJubilacion = 0.13, DescuentoFCompensador = 0.003, DescuentoCajaComp = 0.045;
 var Rem = 1 - (DescuentoOS + DescuentoJubilacion + DescuentoFCompensador);
-var DescuentoAdemys = 0, DescuentoPresentismo = 0;
+var DescuentoUTE = 0, DescuentoPresentismo = 0;
 
 // const AumentoAsignaciones = 1.2375*1.25625*1.5641*1.5*1.8666667*1.68;
 // const ValorUMAF = 50*AumentoAsignaciones;
@@ -212,9 +212,9 @@ class Docente {
             this.descuentoFCompensador = -this.remus*DescuentoFCompensador;
             this.descuentoCajaComp = 0;
         }
-        this.descuentoAdemys = -(this.remus + this.cmg)*DescuentoAdemys;
+        this.descuentoUTE = -(this.remus + this.cmg)*descuentoUTE;
         this.descuentoTotal = this.descuentoOS + this.descuentoJubilacion 
-                    + this.descuentoFCompensador + this.descuentoCajaComp + this.descuentoAdemys;	
+                    + this.descuentoFCompensador + this.descuentoCajaComp + this.descuentoUTE;	
 
         //para el bruto sumo todo
         this.sueldoBruto = this.remus + this.fonid + this.conectividad + this.adicionalEspecial + this.cmg + this.sumaFija;
@@ -485,17 +485,17 @@ var items = {
         tipo : 'd',
         //descripcion :  "4,5% de las cifras remunerativas. Es un aporte extra para acceder a un complemento a la jubilación. Se aplica por defecto a los docentes de privada."
     },
-    descuentoAdemys : {
-        nombre : "ADEMYS",
+    descuentoUTE : {
+        nombre : "UTE",
         tope : false,
         tipo : 'd',
-        //descripcion :  "1,5% de las cifras remunerativas y del C.M.G."
+        //descripcion :  "2% del bruto."
     },
     descuentoPresentismo : {
         nombre : "Desc. Adicional Salarial",
         tope : false,
         tipo : 'd',
-        //descripcion :  "Presentismo: 10% del básico y del Decreto 483/05. Se descuenta con un mes de atraso."
+        //descripcion :  "Presentismo: 10% del básico y del Decreto 483/05."
     },
     sueldoNeto : {
         nombre : "Sueldo Neto",
@@ -773,10 +773,10 @@ function elegir_antiguedad() {
 }
 function elegir_afiliado() {
     if (document.getElementById("afiliado").checked) {
-        DescuentoAdemys = 0.015;
+        DescuentoUTE = 0.02;
     }
     else {
-        DescuentoAdemys = 0;
+        DescuentoUTE = 0;
     }
     calcular(0);
 }    

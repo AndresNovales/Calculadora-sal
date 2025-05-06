@@ -31,7 +31,7 @@ fetch('https://raw.githubusercontent.com/juanwinograd/CalculadoraAdemys/main/ipc
 
 const DescuentoOS = 0.06, DescuentoJubilacion = 0.13, DescuentoFCompensador = 0.003, DescuentoCajaComp = 0.045;
 var Rem = 1 - (DescuentoOS + DescuentoJubilacion + DescuentoFCompensador);
-var DescuentoAdemys = 0, DescuentoPresentismo = 0;
+var DescuentoUTE = 0, DescuentoPresentismo = 0;
 
 //Valores para JC
 var valoresJC = {
@@ -74,7 +74,7 @@ var items = {basico : {nombre : "Sueldo Básico", tope : 0, tipo : 'r', descripc
             jerarquizacion : {nombre : "Plus Jerarquización", tope: 0, tipo : 'r', descripcion : "En general es el 15% del básico. Para directorxs hay un plus adicional que dependiendo de la cantidad de turnos y secciones puede ser 6, 10 o 15%, acá sumamos el 6%"},
             dedicacionExclusiva : {nombre : "Dedicación Exclusiva", tope: 0, tipo : 'r', descripcion : "Plus para rectorx de media de 40 horas semanales"},
             antiguedadBasico : {nombre : "Antigüedad", tope: 0, tipo : 'r', descripcion : "Antigüedad sobre el básico"},
-            presentismo : {nombre : "Adicional Salarial", tope: 0, tipo : 'r', descripcion : "Presentismo: 10% del básico y del Decreto 483/05. Se paga con un mes de atraso."},
+            presentismo : {nombre : "Adicional Salarial", tope: 0, tipo : 'r', descripcion : "Presentismo: 10% del básico y del Decreto 483/05."},
             dec483 : {nombre : "Suma Decreto 483/05", tope: valoresJC.Dec483, tipo : 'r', descripcion : "$"+(valoresJC.Dec483/2)+" por cargo simple o 19hs. Se paga hasta dos cargos o 38hs"},
             antiguedadDec483 : {nombre : "Antigüedad Dec. 483", tope: valoresJC.Dec483, tipo : 'r', descripcion :  "Antigüedad sobre el Decreto 483/05"},
             mdm : {nombre : "Material Didáctico Mensual", tope: 0, tipo : 'nr', descripcion :  ""},
@@ -91,8 +91,8 @@ var items = {basico : {nombre : "Sueldo Básico", tope : 0, tipo : 'r', descripc
             descuentoJubilacion : {nombre : "Jubilación", tope: 0, tipo : 'd', descripcion :  "13% de las cifras remunerativas. 11% del régimen general más un 2% del régimen especial docente."},
             descuentoFCompensador : {nombre : "Fondo Compensador", tope: 0, tipo : 'd', descripcion :  "0,3% de las cifras remunerativas. Es un seguro de vida obligatorio."},
             descuentoCajaComp : {nombre : "Caja Complementaria", tope: 0, tipo : 'd', descripcion :  "4,5% de las cifras remunerativas. Es un aporte extra para acceder a un complemento a la jubilación. Se aplica por defecto a los docentes de privada."},
-            descuentoAdemys : {nombre : "ADEMYS", tope: 0, tipo : 'd', descripcion :  "1,5% de las cifras remunerativas y del C.M.G."},
-            descuentoPresentismo : {nombre : "Desc. Adicional Salarial", tope: 0, tipo : 'd', descripcion :  "Presentismo: 10% del básico y del Decreto 483/05. Se descuenta con un mes de atraso."},
+            descuentoUTE : {nombre : "UTE", tope: 0, tipo : 'd', descripcion :  "2% del bruto"},
+            descuentoPresentismo : {nombre : "Desc. Adicional Salarial", tope: 0, tipo : 'd', descripcion :  "Presentismo: 10% del básico y del Decreto 483/05."},
             sueldoNeto : {nombre : "Sueldo Neto", tope: 0, tipo : 's'},
             hijo : {nombre: 'Asignación Hijo/a', tope : 0, tipo : 'a'},
             hijoDiscapacidad : {nombre: 'Asignación Hijo/a con discapacidad', tope : 0, tipo : 'a'},
@@ -250,9 +250,9 @@ function calcular_sueldo() {
         this.descuentoFCompensador = -this.remus*DescuentoFCompensador;
         this.descuentoCajaComp = 0;
     }
-    this.descuentoAdemys = -(this.remus + this.cmg)*DescuentoAdemys;
+    this.descuentoUTE = -(this.remus + this.cmg)*DescuentoUTE;
     this.descuentoTotal = this.descuentoOS + this.descuentoJubilacion 
-                + this.descuentoFCompensador + this.descuentoCajaComp + this.descuentoAdemys;	
+                + this.descuentoFCompensador + this.descuentoCajaComp + this.descuentoUTE;	
 
     //para el bruto sumo todo
     this.sueldoBruto = this.remus + this.fonid + this.conectividad + this.adicionalEsp + this.cmg + this.sumaFija;
@@ -607,10 +607,10 @@ function elegir_antiguedad() {
 }
 function elegir_afiliado() {
     if (document.getElementById("afiliado").checked) {
-        DescuentoAdemys = 0.015;
+        DescuentoUTE = 0.02;
     }
     else {
-        DescuentoAdemys = 0;
+        DescuentoUTE = 0;
     }
     calcular(0);
 }    
