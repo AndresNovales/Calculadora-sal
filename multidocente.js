@@ -31,19 +31,6 @@ var asignaciones = {
             hijoDiscapacidad : 0
 };
 
-
-//Calcula cuanto cobras de un item por hs horas cátedra
-function item_horas(hs, maxHoras, tope) {
-    var item;
-    if (hs < maxHoras) { 
-        item = tope/maxHoras*hs; 
-    }
-    else {
-        item = tope;
-    }
-    return(item);
-}
-
 class Cargo {
     constructor(area, jornada, puntaje = 0, horas = 0, plus = 0, plusEscRecuperacion = 0, plusExclusiva = 0) {
         this.area = area;
