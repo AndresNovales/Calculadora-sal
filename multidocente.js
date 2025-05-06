@@ -4,6 +4,9 @@ const DescuentoOS = 0.06, DescuentoJubilacion = 0.13, DescuentoFCompensador = 0.
 var Rem = 1 - (DescuentoOS + DescuentoJubilacion + DescuentoFCompensador);
 var DescuentoAdemys = 0, DescuentoPresentismo = 0;
 
+function item_antiguedad(horas, tope, monto_unitario, antiguedad) {
+    return Math.min(horas, tope) * monto_unitario * (antiguedad / 100);
+}
 // const AumentoAsignaciones = 1.2375*1.25625*1.5641*1.5*1.8666667*1.68;
 // const ValorUMAF = 50*AumentoAsignaciones;
 const TopesAsignaciones = [60000,87500,114500];
@@ -138,6 +141,7 @@ class Docente {
         // horas    	   	
         else if (cargo.jornada == "HorasM") {
             cargo.dec483 = item_horas(cargo.horas,38,Dec483);
+            cargo.antiguedad_dec483 = cargo.horas * Dec483 * (docente.antiguedad / 100);
             cargo.mdm = item_horas(cargo.horas,38,MDM);
             cargo.sumaFija = item_horas(cargo.horas,38,SumaFija);
             cargo.adicionalEspecial = item_horas(cargo.horas,30,AdicionalEspecial);
@@ -147,6 +151,7 @@ class Docente {
         }
         else if (cargo.jornada == "HorasT") {
             cargo.dec483 = item_horas(cargo.horas,38,Dec483);
+            cargo.antiguedad_dec483 = cargo.horas * Dec483 * (docente.antiguedad / 100);
             cargo.mdm = item_horas(cargo.horas,38,MDM);
             cargo.sumaFija = item_horas(cargo.horas,38,SumaFija);
             cargo.adicionalEspecial = item_horas(cargo.horas,24,AdicionalEspecial);
@@ -165,9 +170,7 @@ class Docente {
         //Jerarquizacion y su proporcional del presentismo no cuentan para cmg
         // cargo.salarioMinimo = cargo.salarioMinimo + cargo.jerarquizacion*1.1*Rem;
 
-        let horasParaDec483 = Math.min(cargo.horas, 38);
-        cargo.antiguedad_dec483 = horasParaDec483 * Dec483 * (antiguedad / 100);       
-        cargo.antiguedadBasico = (cargo.basico + cargo.jerarquizacion + cargo.dedicacionExclusiva)*this.antiguedad;
+            cargo.antiguedadBasico = (cargo.basico + cargo.jerarquizacion + cargo.dedicacionExclusiva)*this.antiguedad;
     }
 
     //calcula el sueldo a partir de los items
