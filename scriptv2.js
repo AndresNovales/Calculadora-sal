@@ -1,8 +1,9 @@
-const MES_ACTUAL = "abril 2025";
-const ULTIMO_IPC = "marzo 2025";
+const MES_ACTUAL = "junio 2025"; const A_COBRAR = "julio 2025";
+const ULTIMO_IPC = "junio 2025";
+document.getElementById("mes-actual").innerHTML = "Sueldo de "+MES_ACTUAL.slice(0, -5)+" (a cobrar en "+A_COBRAR.slice(0, -5)+")";
 const DescuentoOS = 0.06, DescuentoJubilacion = 0.13, DescuentoFCompensador = 0.003, DescuentoCajaComp = 0.045;
 var Rem = 1 - (DescuentoOS + DescuentoJubilacion + DescuentoFCompensador);
-var DescuentoUTE = 0, DescuentoPresentismo = 0;
+var DescuentoAdemys = 0, DescuentoPresentismo = 0;
 
 // const AumentoAsignaciones = 1.2375*1.25625*1.5641*1.5*1.8666667*1.68;
 // const ValorUMAF = 50*AumentoAsignaciones;
@@ -165,13 +166,14 @@ class Docente {
         //Jerarquizacion y su proporcional del presentismo no cuentan para cmg
         // cargo.salarioMinimo = cargo.salarioMinimo + cargo.jerarquizacion*1.1*Rem;
 
-
-        cargo.antiguedadBasico = (cargo.basico + cargo.jerarquizacion + cargo.dedicacionExclusiva)*this.antiguedad;
-        cargo.antiguedadDec483 = cargo.dec483*this.antiguedad
     }
 
     //calcula el sueldo a partir de los items
     calcular_sueldo() {
+        
+        //la antigüedad es para el docente, no el cargo
+        this.antiguedadBasico = (this.basico + this.jerarquizacion + this.dedicacionExclusiva)*this.antiguedad;
+        this.antiguedadDec483 = this.dec483*this.antiguedad
 
         //sumo las cifras remunerativas
         this.sinCMG = (this.basico*1.1 + this.dec483*1.1 + this.antiguedadBasico + this.antiguedadDec483 + this.supleEscRec)*Rem;
@@ -202,19 +204,20 @@ class Docente {
         if (this.antiguedad >= 0.5) this.remus = this.remus + this.mdm;
 
         // descuentos
-        this.descuentoOS = -this.remus*DescuentoOS;
-        this.descuentoJubilacion = -this.remus*DescuentoJubilacion;
+        this.PCDescuento = 0;
+        this.descuentoOS = -this.remus*DescuentoOS; this.PCDescuento += DescuentoOS;
+        this.descuentoJubilacion = -this.remus*DescuentoJubilacion; this.PCDescuento += DescuentoJubilacion;
         if (privada) { 
-            this.descuentoCajaComp = -this.remus*DescuentoCajaComp; 
+            this.descuentoCajaComp = -this.remus*DescuentoCajaComp; this.PCDescuento += DescuentoCajaComp;
             this.descuentoFCompensador = 0;
         }
         else {
-            this.descuentoFCompensador = -this.remus*DescuentoFCompensador;
+            this.descuentoFCompensador = -this.remus*DescuentoFCompensador; this.PCDescuento += DescuentoFCompensador;
             this.descuentoCajaComp = 0;
         }
-        this.descuentoUTE = -(this.remus + this.cmg)*descuentoUTE;
+        this.descuentoAdemys = -(this.remus + this.cmg)*DescuentoAdemys; this.PCDescuento += DescuentoAdemys;
         this.descuentoTotal = this.descuentoOS + this.descuentoJubilacion 
-                    + this.descuentoFCompensador + this.descuentoCajaComp + this.descuentoUTE;	
+                    + this.descuentoFCompensador + this.descuentoCajaComp + this.descuentoAdemys;	
 
         //para el bruto sumo todo
         this.sueldoBruto = this.remus + this.fonid + this.conectividad + this.adicionalEspecial + this.cmg + this.sumaFija;
@@ -225,6 +228,10 @@ class Docente {
                 
         //para el neto resto los descuentos
         this.sueldoNeto = this.sueldoBruto + this.descuentoTotal;
+
+        //AGUINALDO
+        this.aguinaldo = (this.remus*(1-this.PCDescuento))/2 + this.cmg/2;
+        if (this.antiguedad < 0.5) this.aguinaldo = this.aguinaldo + this.mdm/2;
     }
 
     //suma todos los cargos de un docente
@@ -333,7 +340,7 @@ fetch('https://raw.githubusercontent.com/juanwinograd/CalculadoraAdemys/main/ipc
     .catch(error => console.error('Error loading JSON:', error));
 
 
-    var valor_items;
+    var valor_items, mes = "";
     fetch('https://raw.githubusercontent.com/juanwinograd/CalculadoraAdemys/main/valoritems_minuscula.json')
         .then(response => response.json())
         .then(data => {
@@ -345,7 +352,8 @@ fetch('https://raw.githubusercontent.com/juanwinograd/CalculadoraAdemys/main/ipc
             optionElement.textContent = 'Seleccionar mes'; 
             optionElement.value = ''; 
             select.appendChild(optionElement);
-            for (let mes in valor_items) { 
+            for (let i = Object.keys(valor_items).length - 2; i >= 1; i--) {
+                let mes = Object.keys(valor_items)[i];
                 const optionElement = document.createElement("option"); 
                 optionElement.value = mes; 
                 optionElement.textContent = mes; 
@@ -485,17 +493,17 @@ var items = {
         tipo : 'd',
         //descripcion :  "4,5% de las cifras remunerativas. Es un aporte extra para acceder a un complemento a la jubilación. Se aplica por defecto a los docentes de privada."
     },
-    descuentoUTE : {
-        nombre : "UTE",
+    descuentoAdemys : {
+        nombre : "ADEMYS",
         tope : false,
         tipo : 'd',
-        //descripcion :  "2% del bruto."
+        //descripcion :  "1,5% de las cifras remunerativas y del C.M.G."
     },
     descuentoPresentismo : {
         nombre : "Desc. Adicional Salarial",
         tope : false,
         tipo : 'd',
-        //descripcion :  "Presentismo: 10% del básico y del Decreto 483/05."
+        //descripcion :  "Presentismo: 10% del básico y del Decreto 483/05. Se descuenta con un mes de atraso."
     },
     sueldoNeto : {
         nombre : "Sueldo Neto",
@@ -773,10 +781,10 @@ function elegir_antiguedad() {
 }
 function elegir_afiliado() {
     if (document.getElementById("afiliado").checked) {
-        DescuentoUTE = 0.02;
+        DescuentoAdemys = 0.015;
     }
     else {
-        DescuentoUTE = 0;
+        DescuentoAdemys = 0;
     }
     calcular(0);
 }    
@@ -846,6 +854,9 @@ function calcular(n) {
         document.getElementById('bruto').innerHTML = Intl.NumberFormat("es-AR", {style: "currency", currency: "ARS", maximumFractionDigits:0}).format(docente.sueldoBruto);	
         document.getElementById('neto').innerHTML = Intl.NumberFormat("es-AR", {style: "currency", currency: "ARS", maximumFractionDigits:0}).format(docente.sueldoNeto);
 
+        //AGUINALDO
+        document.getElementById('sac').innerHTML = Intl.NumberFormat("es-AR", {style: "currency", currency: "ARS", maximumFractionDigits:0}).format(docente.aguinaldo);
+
         //Si está activado el detalle lo muestro
         if (mostrarDetalle == true) {            mostrar_detalle();        }
     }
@@ -859,6 +870,14 @@ function mostrar(event) {
 function mostrar_detalle() {
     //Si ya había algo lo limpio
     var divDetalle = limpiar_detalle();
+
+    //creo el detalle
+    var p = document.createElement('p');
+    p.setAttribute("id","leyenda");
+    p.style.fontSize = "14px"; p.style.fontStyle = "italic";
+    p.style.lineHeight = "1.5";
+    p.innerText = "Se muestra el total que deberías cobrar por la suma de tus cargos, teniendo en cuenta los topes en cada ítem.";
+    divDetalle.appendChild(p);
 
     titulo1 = document.createElement("h4");
     titulo1.innerHTML = "Cifras remunerativas";
@@ -918,7 +937,7 @@ function activar_detalle() {
         var divDetalle = document.createElement("div");
         divDetalle.setAttribute("id","detalle");
         divDetalle.setAttribute("class","detalle");
-        document.getElementById("calculadora").appendChild(divDetalle);
+        document.getElementById("resultado").appendChild(divDetalle);
         mostrar_detalle()
         mostrarDetalle = true;
         document.getElementById("botondetalle").innerHTML = "Ocultar detalle"
@@ -949,13 +968,8 @@ function agregar_cargo() {
                 }
             }}
         )
-        var p = document.createElement('p');
-        p.setAttribute("id","leyenda");
-        p.innerText = "*Se muestra el total que deberías cobrar por la suma de los cargos teniendo en cuenta los topes.";
 
-        var calculadora = document.getElementById("calculadora");
-        calculadora.insertBefore(p,document.getElementById("botondetalle"));
-        calculadora.insertBefore(formu,document.getElementById("resultado"));
+        document.getElementById("calculadora").insertBefore(formu,document.getElementById("botonasignaciones"));
         document.getElementById("botoncargo").innerHTML = "-";
         document.getElementById("textocargo").innerHTML = "Eliminar segundo cargo";
         segundoCargo = true;	
@@ -963,7 +977,6 @@ function agregar_cargo() {
     }
     else {
         document.getElementById("formu1").remove();
-        document.getElementById("leyenda").remove();
         document.getElementById("botoncargo").innerHTML = "+";
         document.getElementById("textocargo").innerHTML = "Agregar otro cargo";
         segundoCargo = false; 
@@ -1007,37 +1020,45 @@ function mostrar_caida(mes) {
     var resultadoPerdida = document.getElementById("resultado-perdida");
     while (resultadoPerdida.firstChild) resultadoPerdida.removeChild(resultadoPerdida.firstChild);
 
-    console.log(mes);
-    var inflacion = ipc[ULTIMO_IPC]/ipc[mes];
-    var p1 = document.createElement('p');
-    p1.innerHTML =  "La <span style='color:red; font-weight:bold;'>inflación acumulada</span> desde "+mes+" fue de <span style='color:red; font-weight:bold;'>"+((inflacion-1)*100).toFixed(1)+"%</span>*";
-    document.getElementById("resultado-perdida").appendChild(p1);
-
+    var inflacion = ipc[ULTIMO_IPC]/ipc[mes]; //ipc[mes] es el IPC del mes anterior al que se seleccionó
     if (docente.calculado) {
         var docente_ = docente.clone(mes);
         var sueldoInflacionado = docente_.sueldoNeto*inflacion;
         var perdida = (-1+docente.sueldoNeto/sueldoInflacionado)*100;
         var aumento_necesario = sueldoInflacionado/docente.sueldoNeto-1;
+        // console.log("caída: ",perdida);
+        // console.log("aumento necesario: ",aumento_necesario);
     
-        var p2 = document.createElement('p');
-        p2.innerHTML =  "Tu sueldo en "+mes+" era de "+
-            Intl.NumberFormat("es-AR", {style: "currency", currency: "ARS", maximumFractionDigits:0}).format(docente_.sueldoNeto);
-        document.getElementById("resultado-perdida").appendChild(p2);
+        var p1 = document.createElement('p');
+        p1.innerHTML =  "Con los mismos cargos, tu sueldo en "+mes+" era de <b>"+
+            Intl.NumberFormat("es-AR", {style: "currency", currency: "ARS", maximumFractionDigits:0}).format(docente_.sueldoNeto)+"</b>";
+        document.getElementById("resultado-perdida").appendChild(p1);
 
+        var p2 = document.createElement('p');
+        p2.innerHTML =  "El <b>aumento acumualdo</b> desde "+mes+" fue del <b>"+((docente.sueldoNeto/docente_.sueldoNeto-1)*100).toFixed(2)+"%</b>";
+        document.getElementById("resultado-perdida").appendChild(p2);
+        
         var p3 = document.createElement('p');
-        p3.innerHTML =  "El aumento fue del "+((docente.sueldoNeto/docente_.sueldoNeto-1)*100).toFixed(2)+"%";
-        //"Significa que tu salario real cayó <span style='color:red; font-weight:bold;'>"+(perdida*100).toFixed(1)+"%</span>."+
+        p3.innerHTML =  "La <span style='color:red; font-weight:bold;'>inflación acumulada</span> desde "+mes+
+        " fue de <span style='color:red; font-weight:bold;'>"+((inflacion-1)*100).toFixed(1)+"%</span>*";
         document.getElementById("resultado-perdida").appendChild(p3);
+
+        var p4 = document.createElement('p');
+        p4.innerHTML =  "El resultado es " + (perdida < 0 ? "una caída" : "un aumento") +
+        " de tu salario real del <span style='color:"+(perdida < 0 ? "red" : "green")+"; font-weight:bold;'>" 
+        + (perdida).toFixed(1) + "%</span>";
+        document.getElementById("resultado-perdida").appendChild(p4);
+        
+        var p5 = document.createElement('p');
+        p5.innerHTML =  "*Fuente: Instituto de Estadística y Censos de la Ciudad de Buenos Aires";
+        if (ipc[A_COBRAR] == undefined) {p5.innerHTML +=  ". (Sin contemplar la inflación de "+MES_ACTUAL+" que aún no se publicó.)";}
+        p5.style.fontSize = "15px"; p5.style.fontStyle = "italic";
+        document.getElementById("resultado-perdida").appendChild(p5);
     }
     else {
-        var p2 = document.createElement('p');
-        p2.style.color = "grey";
-        p2.innerHTML =  "Para calcular la caída salarial, ingresá tus cargos";
-        document.getElementById("resultado-perdida").appendChild(p2);
+        var p1 = document.createElement('p');
+        p1.style.color = "grey";
+        p1.innerHTML =  "Ingresá tus cargos";
+        document.getElementById("resultado-perdida").appendChild(p1);
     }
-    var p5 = document.createElement('p');
-    p5.innerHTML =  "*Fuente: Instituto de Estadística y Censos de la Ciudad de Buenos Aires";
-    if (ipc[MES_ACTUAL] == undefined) {p5.innerHTML +=  ". (Sin contemplar la inflación de "+MES_ACTUAL+" que aún no se publicó.)";}
-    p5.style.fontSize = "small";
-    document.getElementById("resultado-perdida").appendChild(p5);
 }
