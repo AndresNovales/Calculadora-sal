@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -148,6 +147,11 @@
         .resultado {
             font-size: 24px;
             margin-top: 30px;
+        }
+        /* Nueva clase para ocultar elementos */
+        .hidden-element {
+            display: none !important;
+        }
     </style>
 </head>
 <body>
@@ -300,16 +304,13 @@
                 <option value=1.2>120% (22 años)</option>
             </select>
 
-            <label for="afiliado"> Afiliadx </label>
-            <input type="checkbox" id="afiliado" onchange="elegir_afiliado()">
+            <div class="hidden-element">
+                <label for="afiliado"> Afiliadx </label>
+                <input type="checkbox" id="afiliado" onchange="elegir_afiliado()">
+            </div>
             
             <label for="presentismo"> Presentismo </label>
             <input type="checkbox" id="presentismo" checked="True" onchange="elegir_presentismo()">
-            
-            <!--div style ="background-color:#f1f1f1; padding: 2px 20px; ">
-                <label for="privada"> Escuela privada </label>
-                <input type="checkbox" id="privada" onchange="elegir_privada()">
-            </div-->
         </form>
         
         <div class="sumcargo">
@@ -319,8 +320,8 @@
 
         <br>
 
-        <button type="button" id="botonasignaciones" onclick="agregar_asignaciones()">Asignaciones familiares</button>	
-            <form class="tdForm formu-asignaciones" id="asignaciones" onchange="elegir_asignaciones()">
+        <button type="button" id="botonasignaciones" class="hidden-element" onclick="agregar_asignaciones()">Asignaciones familiares</button>	
+            <form class="tdForm formu-asignaciones hidden-element" id="asignaciones" onchange="elegir_asignaciones()">
                 <label for="hijo"> Hijos/as: </label>
                 <input type="number" min="0" max="9" id="hijo" value="0">
                 <label for="hijoDiscapacidad"> Hijos/as con discapacidad: </label>
@@ -345,7 +346,7 @@
         <button type="button" id="botondetalle" onclick="activar_detalle()">Mostrar detalle</button>	
     </div>
 
-    <div id="aguinaldo">
+    <div id="aguinaldo" class="hidden-element">
         <h1>Medio Aguinaldo</h1>
         <p>Suponiendo que mantuviste los mismos cargos durante 6 meses.
             Si no, es proporcional a los días trabajados.</p>
@@ -354,7 +355,7 @@
         </div>        
         <p style="font-style: italic;">(Incluye la "Compensación semestral" y "Compensación Mat. Didáctico" para quienes tienen menor antigüedad).</p>
     </div>
-    <div id="perdida">
+    <div id="perdida" class="hidden-element">
         <h1>Meses anteriores</h1>
         <p>Elegí un mes para comparar.</p>
         <form id="contenedor-mes" class="tdForm"></form>
