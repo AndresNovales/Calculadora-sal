@@ -993,7 +993,7 @@ function agregar_asignaciones() {
     }
     else {
         document.getElementById("asignaciones").style.display = "none";
-        document.getElementById("botonasignaciones").innerHTML = "Asignaciones familiares";
+       // document.getElementById("botonasignaciones").innerHTML = "Asignaciones familiares";
         //document.getElementById("textoasignaciones").innerHTML = "Asignaciones familiares";
         mostrarAsignaciones = false;
         calcular(0);
