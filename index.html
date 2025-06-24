@@ -97,84 +97,65 @@
         }
         
         button {
+            padding: 10px 24px;
+            box-shadow: 0 0 11px #0000001a;
             background-color: var(--ute-celeste);
-            color: var(--ute-blanco);
             border: none;
-            padding: 12px 24px;
-            font-size: 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            font-weight: 500;
-            margin: 5px 0;
+            color: white;
+            font-size: 20px
         }
-        
-        button:hover {
-            background-color: var(--ute-celeste-oscuro);
-        }
-        
-        .resultado {
-            font-size: 18px;
-            margin-top: 20px;
-            padding: 15px;
-            background-color: var(--ute-gris);
-            border-left: 4px solid var(--ute-celeste);
-            line-height: 1.8;
-        }
-        
-        .resultado .alerta {
-            font-weight: bold;
-            color: #d9534f;
-        }
-        
-        .oculto0, .oculto1 {
+        .oculto0 {
             display: none;
         }
-        
+        .oculto1 {
+            display: none;
+        }
         .detalle {
-            border-left: 4px solid var(--ute-celeste);
-            background-color: var(--ute-gris);
+            border-left: 5px solid var(--ute-celeste);
+            background-color: #f1f1f1;
             list-style-type: none;
-            padding: 15px;
-            font-size: 16px;
-            line-height: 1.6;
-            margin-top: 15px;
-        }
-        
-        .sumcargo {
-            margin: 15px 0;
-        }
-        
-        .sumcargo button {
-            padding: 8px 16px;
-            border-radius: 50%;
+            padding: 10px 20px;
             font-size: 20px;
+            font-weight: normal;
+            line-height: 150%;
         }
-        
+        dd {
+            font-size: 16px;
+            font-style: italic;
+        }
+        .sumcargo {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .sumcargo button {
+            font-size: 24px;
+            padding: 8px 16px;
+            border-radius: 	50%;
+        }        
         .formu-asignaciones {
-            border-left: 4px solid var(--ute-celeste);
-            background-color: var(--ute-gris);
-            padding: 15px;
-            margin-top: 15px;
+            border-left: 5px solid rgb(0, 217, 255);
+            background-color: #f1f1f1;
+            padding: 10px 20px;
             display: none;
         }
-        
-        label {
-            display: inline-block;
-            margin: 5px 0;
-            font-weight: 500;
+        #calculadora, #perdida, #resultado, #aguinaldo {
+            margin: 20px;
+            border: 2px solid #000; 
+            padding: 5px;
+            width: 300px;
         }
-        
-        #textocargo {
-            margin-left: 10px;
-            vertical-align: middle;
-        }
+        .resultado {
+            font-size: 24px;
+            margin-top: 30px;
     </style>
 </head>
 <body>
     <div class="header">
         <img src="https://ute.org.ar/wp-content/uploads/2019/09/ute-logo.png" alt="Logo UTE" height="60">
-    <div class="calc">
+        <h1>Calculadora Salarial</h1>
+    </div>
+    
+   <div class="calc">
     <div id="calculadora">
         <h1>Ingresá tus cargos</h1>
         <form class="tdForm" id="formu0" onsubmit="mostrar(event)">
@@ -362,7 +343,25 @@
         <br>
         <button type="button" id="botondetalle" onclick="activar_detalle()">Mostrar detalle</button>	
     </div>
-    
-        <script src="scriptv2.js"></script>
-    </body>
-    </html>
+
+    <div id="aguinaldo">
+        <h1>Medio Aguinaldo</h1>
+        <p>Suponiendo que mantuviste los mismos cargos durante 6 meses.
+            Si no, es proporcional a los días trabajados.</p>
+        <div class="resultado">
+            <b>En mano: <span id="sac"></span></b>
+        </div>        
+        <p style="font-style: italic;">(Incluye la "Compensación semestral" y "Compensación Mat. Didáctico" para quienes tienen menor antigüedad).</p>
+    </div>
+    <div id="perdida">
+        <h1>Meses anteriores</h1>
+        <p>Elegí un mes para comparar.</p>
+        <form id="contenedor-mes" class="tdForm"></form>
+        <div id="resultado-perdida" class="resultado">
+    </div> 
+    </div>
+</div> 
+
+    <script src="scriptv2.js"></script>
+</body>
+</html>
