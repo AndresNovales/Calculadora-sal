@@ -897,11 +897,11 @@ function mostrar_detalle() {
     var descuentos = document.createElement("dl");
     divDetalle.appendChild(descuentos);
 
-    titulo4 = document.createElement("h4");
-    titulo4.innerHTML = "Asignaciones Familiares";
-    divDetalle.appendChild(titulo4);
-    var asignaciones = document.createElement("dl");
-    divDetalle.appendChild(asignaciones);
+   // titulo4 = document.createElement("h4");
+    // titulo4.innerHTML = "Asignaciones Familiares";
+// divDetalle.appendChild(titulo4);
+ // '  var asignaciones = document.createElement("dl");
+//  '  divDetalle.appendChild(asignaciones);
 
     
     for (item of docente.detalle()) {
