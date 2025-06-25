@@ -1,427 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/x-icon" href="https://ute.org.ar/wp-content/uploads/2019/09/ute-logo.png">
     <title>Calculadora Salarial - UTE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --ute-blue: #00AEEF;
-            --ute-dark-blue: #0085C3;
-            --ute-light-blue: #E6F7FF;
-            --ute-white: #FFFFFF;
-            --ute-black: #333333;
-            --ute-light-gray: #F5F5F5;
-            --ute-medium-gray: #E0E0E0;
-            --ute-dark-gray: #757575;
-            --ute-red: #E53935;
-            --ute-green: #43A047;
-            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
+            --ute-celeste: #00AEEF;
+            --ute-celeste-oscuro: #0085C3;
+            --ute-blanco: #FFFFFF;
+            --ute-negro: #000000;
+            --ute-gris: #F5F5F5;
+            --ute-gris-oscuro: #DDDDDD;
         }
 
         body {
             font-family: 'Roboto', sans-serif;
-            background-color: #f8f9fa;
-            color: var(--ute-black);
+            background-color: var(--ute-gris);
+            color: var(--ute-negro);
             line-height: 1.6;
-
-            padding: 0;
             margin: 0;
+            padding: 0;
         }
 
-        /* Header */
         .header {
-            background: linear-gradient(135deg, var(--ute-dark-blue) 0%, var(--ute-blue) 100%);
-            color: var(--ute-white);
+            background-color: var(--ute-celeste);
+            color: var(--ute-blanco);
             padding: 20px 0;
             text-align: center;
-            box-shadow: var(--box-shadow);
-            position: relative;
-            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .header::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: url('https://ute.org.ar/wp-content/themes/ute/images/pattern.png');
-            opacity: 0.1;
+        .header h1 {
+            margin: 10px 0 0;
+            font-size: 28px;
         }
 
-        .header-content {
-            position: relative;
-
-
-
+        .calc {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            padding: 20px;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
         }
 
-        .logo-container {
-            display: flex;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-        
-        .logo-container img {
-            height: 70px;
-            margin-right: 15px;
-        }
-        
-        .header h1 {
-            font-size: 32px;
-            font-weight: 700;
-            margin: 0;
-            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-            letter-spacing: 0.5px;
-        }
-        
-        .header-subtitle {
-            font-size: 18px;
-            font-weight: 400;
-            margin-top: 5px;
-            max-width: 800px;
-        }
-        
-        /* Main container */
-        .container {
-            max-width: 1200px;
-            margin: 30px auto;
-            padding: 0 20px;
-        }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-        }
-        
-        @media (min-width: 992px) {
-            .grid {
-                grid-template-columns: 1fr 1fr;
+        @media (max-width: 768px) {
+            .calc {
+                flex-direction: column;
+                align-items: center;
             }
         }
 
-        /* Cards */
-        .card {
-            background-color: var(--ute-white);
-            border-radius: 12px;
-            box-shadow: var(--box-shadow);
-            padding: 30px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            height: 100%;
-        }
-        
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-        }
-        
-        .card-header {
-            display: flex;
-            align-items: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid var(--ute-light-blue);
-        }
-        
-        .card-icon {
-            background-color: var(--ute-light-blue);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-        }
-
-        .card-icon i {
-
-            font-size: 24px;
-            color: var(--ute-blue);
-        }
-        
-        .card-title {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--ute-blue);
-            margin: 0;
-        }
-
-        /* Form elements */
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-label {
-            display: block;
-            font-size: 16px;
-            font-weight: 500;
-            margin-bottom: 8px;
-            color: var(--ute-black);
-        }
-
-        .form-select, 
-        .form-input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid var(--ute-medium-gray);
+        #calculadora, #perdida {
+            background: var(--ute-blanco);
             border-radius: 8px;
-
-            font-size: 16px;
-            background-color: var(--ute-white);
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2300AEEF' viewBox='0 0 16 16'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 16px center;
-            background-size: 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin: 15px;
+            width: 100%;
+            max-width: 500px;
         }
 
-        .form-select:focus, 
-        .form-input:focus {
-            outline: none;
-            border-color: var(--ute-blue);
-            box-shadow: 0 0 0 3px rgba(0, 174, 239, 0.2);
-        }
-
-        .form-select option {
-            padding: 10px;
-        }
-        
-        .checkbox-group {
-            display: flex;
-            align-items: center;
+        h1 {
+            color: var(--ute-celeste);
+            font-size: 24px;
             margin-bottom: 15px;
         }
-        
-        .checkbox-input {
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-            accent-color: var(--ute-blue);
-        }
 
-        .checkbox-label {
+        .tdForm {
             font-size: 16px;
-            color: var(--ute-black);
         }
-        
-        /* Buttons */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            padding: 14px 28px;
-            background-color: var(--ute-blue);
-            color: white;
-            font-size: 18px;
-            font-weight: 500;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 6px rgba(0, 174, 239, 0.3);
-        }
-        
-        .btn:hover {
-            background-color: var(--ute-dark-blue);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 10px rgba(0, 174, 239, 0.4);
-        }
-        
-        .btn i {
-            margin-right: 8px;
-        }
-        
-        .btn-outline {
-            background-color: transparent;
-            border: 2px solid var(--ute-blue);
-            color: var(--ute-blue);
-            box-shadow: none;
 
-
-        }
-        
-        .btn-outline:hover {
-            background-color: var(--ute-light-blue);
-        }
-        
-        .add-cargo {
-            display: flex;
-            align-items: center;
-            margin-top: 10px;
-        }
-        
-        .add-cargo-btn {
-            width: 40px;
-            height: 40px;
-            padding: 0;
-            border-radius: 50%;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 15px;
-        }
-        
-        /* Results section */
-        .results-card {
-            background: linear-gradient(135deg, var(--ute-white) 0%, var(--ute-light-blue) 100%);
-            border-left: 5px solid var(--ute-blue);
-        }
-        
-        .results-content {
-            margin-top: 15px;
-        }
-        
-        .result-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 15px 0;
-            border-bottom: 1px solid var(--ute-light-gray);
-        }
-        
-        .result-item:last-child {
-            border-bottom: none;
-        }
-        
-        .result-label {
-            font-size: 18px;
-            color: var(--ute-dark-gray);
-        }
-        
-        .result-value {
-            font-size: 20px;
-            font-weight: 500;
-            color: var(--ute-black);
-        }
-        
-        .result-net {
-            font-size: 24px;
-            font-weight: 700;
-            color: var(--ute-blue);
-        }
-        
-        .detail-btn {
+        .tdForm select, 
+        .tdForm input[type="number"] {
             width: 100%;
-            margin-top: 25px;
-            background-color: var(--ute-light-blue);
-            color: var(--ute-blue);
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid var(--ute-gris-oscuro);
+            border-radius: 6px;
+            font-size: 16px;
+            background-color: var(--ute-blanco);
         }
-        
-        .detail-btn:hover {
-            background-color: var(--ute-blue);
+
+        .tdForm input[type="number"]::placeholder {
+            color: #666;
+        }
+
+        .tdForm input[type="checkbox"] {
+            height: 20px;
+            width: 20px;
+            vertical-align: middle;
+            margin: 10px 5px;
+        }
+
+        button {
+            padding: 10px 24px;
+            box-shadow: 0 0 11px #0000001a;
+            background-color: var(--ute-celeste);
+            border: none;
             color: white;
+            font-size: 20px
         }
-        
-        /* Footer */
-        .footer {
-            background-color: var(--ute-dark-blue);
-            color: var(--ute-white);
-            padding: 30px 0;
-            text-align: center;
-            margin-top: 50px;
+        .oculto0 {
+            display: none;
         }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
+        .oculto1 {
+            display: none;
         }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+        .detalle {
+            border-left: 5px solid var(--ute-celeste);
+            background-color: #f1f1f1;
+            list-style-type: none;
+            padding: 10px 20px;
+            font-size: 20px;
+            font-weight: normal;
+            line-height: 150%;
         }
-        
-        .footer-link {
-            color: var(--ute-white);
-            text-decoration: none;
-            margin: 0 15px;
-            transition: opacity 0.3s ease;
+        dd {
+            font-size: 16px;
+            font-style: italic;
         }
-        
-        .footer-link:hover {
-            opacity: 0.8;
-            text-decoration: underline;
+        .sumcargo {
+            font-size: 20px;
+            font-weight: bold;
         }
-        
-        .footer-disclaimer {
-            font-size: 14px;
-            opacity: 0.8;
-            max-width: 800px;
-            margin: 0 auto;
+        .sumcargo button {
+            font-size: 24px;
+            padding: 8px 16px;
+            border-radius: 	50%;
+        }        
+        .formu-asignaciones {
+            border-left: 5px solid rgb(0, 217, 255);
+            background-color: #f1f1f1;
+            padding: 10px 20px;
+            display: none;
         }
-        
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 24px;
-            }
-            
-            .header-subtitle {
-                font-size: 16px;
-            }
-            
-            .card {
-                padding: 20px;
-            }
-            
-            .card-title {
-                font-size: 20px;
-            }
-            
-            .btn {
-                padding: 12px 20px;
-                font-size: 16px;
-            }
+        #calculadora, #perdida, #resultado, #aguinaldo {
+            margin: 20px;
+            border: 2px solid #000; 
+            padding: 5px;
+            width: 300px;
         }
-        
-        /* Hidden elements */
+        .resultado {
+            font-size: 24px;
+            margin-top: 30px;
+        }
+        /* Nueva clase para ocultar elementos */
         .hidden-element {
             display: none !important;
         }
-        
-        /* Icons (using UTF-8 characters as icons) */
-        .icon::before {
-            display: inline-block;
-            font-style: normal;
-            font-variant: normal;
-            text-rendering: auto;
-            -webkit-font-smoothing: antialiased;
-        }
-        
-        .icon-calc::before { content: "📊"; }
-        .icon-money::before { content: "💰"; }
-        .icon-add::before { content: "+"; }
-        .icon-detail::before { content: "🔍"; }
-        .icon-family::before { content: "👪"; }
     </style>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header-content">
-            <div class="logo-container">
-                <img src="https://ute.org.ar/wp-content/uploads/2019/09/ute-logo.png" alt="Logo UTE">
-                <h1>CALCULADORA SALARIAL DOCENTE</h1>
-            </div>
-        </div>
-    </header>
+    <div class="header">
+        <img src="https://ute.org.ar/wp-content/uploads/2019/09/ute-logo.png" alt="Logo UTE" height="60">
+        <h1>Calculadora Salarial</h1>
+    </div>
+
    <div class="calc">
     <div id="calculadora">
         <h1>Ingresá tus cargos</h1>
@@ -566,6 +304,8 @@
                 <option value=1.2>120% (22 años)</option>
             </select>
 
+
+
             <div class="hidden-element">
                 <label for="afiliado"> Afiliadx </label>
                 <input type="checkbox" id="afiliado" onchange="elegir_afiliado()">
@@ -573,6 +313,15 @@
 
             <label for="presentismo"> Presentismo </label>
             <input type="checkbox" id="presentismo" checked="True" onchange="elegir_presentismo()">
+
+
+
+
+
+
+
+
+
 
 
 
@@ -613,6 +362,7 @@
         <button type="button" id="botondetalle" onclick="activar_detalle()">Mostrar detalle</button>	
     </div>
 
+
     <div id="aguinaldo" class="hidden-element">
         <h1>Medio Aguinaldo</h1>
         <p>Suponiendo que mantuviste los mismos cargos durante 6 meses.
@@ -622,6 +372,7 @@
         </div>        
         <p style="font-style: italic;">(Incluye la "Compensación semestral" y "Compensación Mat. Didáctico" para quienes tienen menor antigüedad).</p>
     </div>
+
     <div id="perdida" class="hidden-element">
         <h1>Meses anteriores</h1>
         <p>Elegí un mes para comparar.</p>
