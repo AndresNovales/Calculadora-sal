@@ -1,6 +1,6 @@
 const MES_ACTUAL = "junio 2025"; const A_COBRAR = "julio 2025";
 const ULTIMO_IPC = "junio 2025";
-document.getElementById("mes-actual").innerHTML = "Sueldo de "+MES_ACTUAL.slice(0, -5)+" (a cobrar en "+A_COBRAR.slice(0, -5)+")";
+document.getElementById("mes-actual").innerHTML = "Sueldo de "+MES_ACTUAL.slice(0, -5)+" (a cobrar el 01/07)";
 const DescuentoOS = 0.06, DescuentoJubilacion = 0.13, DescuentoFCompensador = 0.003, DescuentoCajaComp = 0.045;
 var Rem = 1 - (DescuentoOS + DescuentoJubilacion + DescuentoFCompensador);
 var DescuentoAdemys = 0, DescuentoPresentismo = 0;
@@ -880,13 +880,13 @@ function mostrar_detalle() {
     divDetalle.appendChild(p);
 
     titulo1 = document.createElement("h4");
-    titulo1.innerHTML = "Cifras remunerativas";
+    titulo1.innerHTML = "Ítems remunerativos";
     divDetalle.appendChild(titulo1);
     var remus = document.createElement("dl");
     divDetalle.appendChild(remus);
 
     titulo2 = document.createElement("h4");
-    titulo2.innerHTML = "Cifras no remunerativas";
+    titulo2.innerHTML = "Ítems no remunerativos";
     divDetalle.appendChild(titulo2);
     var noremus = document.createElement("dl");
     divDetalle.appendChild(noremus);
@@ -940,12 +940,12 @@ function activar_detalle() {
         document.getElementById("resultado").appendChild(divDetalle);
         mostrar_detalle()
         mostrarDetalle = true;
-        document.getElementById("botondetalle").innerHTML = "Ocultar detalle"
+        document.getElementById("botondetalle").innerHTML = "Ocultar conceptos del salario"
     }
     else {
         if (document.getElementById("detalle") != null) {document.getElementById("detalle").remove();}
         mostrarDetalle = false;
-        document.getElementById("botondetalle").innerHTML = "Mostrar detalle"
+        document.getElementById("botondetalle").innerHTML = "Ver conceptos del salario"
     }
 }
 function agregar_cargo() {
