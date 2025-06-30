@@ -470,25 +470,25 @@ var items = {
         tipo : 's'
     },
     descuentoOS : {
-        nombre : "Obra Social",
+        nombre : "Obra Social (6%)",
         tope : false,
         tipo : 'd',
         //descripcion :  "6% de las cifras remunerativa. Son dos items: 3% para la obra social y otro 3% para otorgar cobertura a jubilados."
     },
     descuentoJubilacion : {
-        nombre : "Jubilación",
+        nombre : "Jubilación (13%)",
         tope : false,
         tipo : 'd',
         //descripcion :  "13% de las cifras remunerativas. 11% del régimen general más un 2% del régimen especial docente."
     },
     descuentoFCompensador : {
-        nombre : "Fondo Compensador",
+        nombre : "Fondo Compensador (0,3%)",
         tope : false,
         tipo : 'd',
         //descripcion :  "0,3% de las cifras remunerativas. Es un seguro de vida obligatorio."
     },
     descuentoCajaComp : {
-        nombre : "Caja Complementaria",
+        nombre : "Caja Complementaria (4,5%)",
         tope : false,
         tipo : 'd',
         //descripcion :  "4,5% de las cifras remunerativas. Es un aporte extra para acceder a un complemento a la jubilación. Se aplica por defecto a los docentes de privada."
@@ -876,7 +876,7 @@ function mostrar_detalle() {
     p.setAttribute("id","leyenda");
     p.style.fontSize = "14px"; p.style.fontStyle = "italic";
     p.style.lineHeight = "1.5";
-    p.innerText = "Se muestra el total que deberías cobrar por la suma de tus cargos, teniendo en cuenta los topes en cada ítem.";
+    p.innerText = "Se muestra el total que deberías cobrar por la suma de los cargos que ingresaste";
     divDetalle.appendChild(p);
 
     titulo1 = document.createElement("h4");
