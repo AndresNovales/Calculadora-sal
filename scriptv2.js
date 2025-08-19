@@ -332,7 +332,7 @@ class Docente {
 var docente = new Docente();
     
 var ipc;
-fetch('https://raw.githubusercontent.com/juanwinograd/CalculadoraAdemys/main/ipc.json')
+fetch('https://github.com/AndresNovales/Calculadora-sal/blob/main/ipc.json')
     .then(response => response.json())
     .then(data => {
         ipc = data;
@@ -341,7 +341,7 @@ fetch('https://raw.githubusercontent.com/juanwinograd/CalculadoraAdemys/main/ipc
 
 
     var valor_items, mes = "";
-    fetch('https://raw.githubusercontent.com/juanwinograd/CalculadoraAdemys/main/valoritems_minuscula.json')
+    fetch('https://github.com/AndresNovales/Calculadora-sal/blob/2c25e90f9acf954f8a45eb9e3667ca9dbc2e70e7/valoritems_minuscula.json')
         .then(response => response.json())
         .then(data => {
             valor_items = data;
@@ -493,10 +493,10 @@ var items = {
         tipo : 'd',
         //descripcion :  "4,5% de las cifras remunerativas. Es un aporte extra para acceder a un complemento a la jubilación. Se aplica por defecto a los docentes de privada."
     },
-    descuentoAdemys : {
-        nombre : "ADEMYS",
-        tope : false,
-        tipo : 'd',
+    //descuentoAdemys : {
+    //    nombre : "ADEMYS",
+    //    tope : false,
+    //    tipo : 'd',
         //descripcion :  "1,5% de las cifras remunerativas y del C.M.G."
     },
     descuentoPresentismo : {
@@ -779,14 +779,14 @@ function elegir_antiguedad() {
         calcular(0);
     }
 }
-function elegir_afiliado() {
-    if (document.getElementById("afiliado").checked) {
-        DescuentoAdemys = 0.015;
-    }
-    else {
-        DescuentoAdemys = 0;
-    }
-    calcular(0);
+//function elegir_afiliado() {
+//    if (document.getElementById("afiliado").checked) {
+//        DescuentoAdemys = 0.015;
+//   }
+//    else {
+//       DescuentoAdemys = 0;
+//    }
+//    calcular(0);
 }    
 function elegir_presentismo() {
     if (document.getElementById("presentismo").checked) {
