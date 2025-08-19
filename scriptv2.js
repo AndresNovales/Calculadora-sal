@@ -215,9 +215,9 @@ class Docente {
             this.descuentoFCompensador = -this.remus*DescuentoFCompensador; this.PCDescuento += DescuentoFCompensador;
             this.descuentoCajaComp = 0;
         }
-        this.descuentoAdemys = -(this.remus + this.cmg)*DescuentoAdemys; this.PCDescuento += DescuentoAdemys;
-        this.descuentoTotal = this.descuentoOS + this.descuentoJubilacion 
-                    + this.descuentoFCompensador + this.descuentoCajaComp + this.descuentoAdemys;	
+        //this.descuentoAdemys = -(this.remus + this.cmg)*DescuentoAdemys; this.PCDescuento += DescuentoAdemys;
+       // this.descuentoTotal = this.descuentoOS + this.descuentoJubilacion 
+        //            + this.descuentoFCompensador + this.descuentoCajaComp + this.descuentoAdemys;	
 
         //para el bruto sumo todo
         this.sueldoBruto = this.remus + this.fonid + this.conectividad + this.adicionalEspecial + this.cmg + this.sumaFija;
@@ -492,12 +492,6 @@ var items = {
         tope : false,
         tipo : 'd',
         //descripcion :  "4,5% de las cifras remunerativas. Es un aporte extra para acceder a un complemento a la jubilación. Se aplica por defecto a los docentes de privada."
-    },
-    //descuentoAdemys : {
-    //    nombre : "ADEMYS",
-    //    tope : false,
-    //    tipo : 'd',
-        //descripcion :  "1,5% de las cifras remunerativas y del C.M.G."
     },
     descuentoPresentismo : {
         nombre : "Desc. Adicional Salarial",
