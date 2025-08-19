@@ -215,9 +215,6 @@ class Docente {
             this.descuentoFCompensador = -this.remus*DescuentoFCompensador; this.PCDescuento += DescuentoFCompensador;
             this.descuentoCajaComp = 0;
         }
-        //this.descuentoAdemys = -(this.remus + this.cmg)*DescuentoAdemys; this.PCDescuento += DescuentoAdemys;
-       // this.descuentoTotal = this.descuentoOS + this.descuentoJubilacion 
-        //            + this.descuentoFCompensador + this.descuentoCajaComp + this.descuentoAdemys;	
 
         //para el bruto sumo todo
         this.sueldoBruto = this.remus + this.fonid + this.conectividad + this.adicionalEspecial + this.cmg + this.sumaFija;
@@ -773,15 +770,7 @@ function elegir_antiguedad() {
         calcular(0);
     }
 }
-//function elegir_afiliado() {
-//    if (document.getElementById("afiliado").checked) {
-//        DescuentoAdemys = 0.015;
-//   }
-//    else {
-//       DescuentoAdemys = 0;
-//    }
-//    calcular(0);
-}    
+
 function elegir_presentismo() {
     if (document.getElementById("presentismo").checked) {
         DescuentoPresentismo = 0;
