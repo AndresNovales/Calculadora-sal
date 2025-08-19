@@ -1,9 +1,9 @@
-const MES_ACTUAL = "junio 2025"; const A_COBRAR = "julio 2025";
-const ULTIMO_IPC = "junio 2025";
-document.getElementById("mes-actual").innerHTML = "Sueldo de "+MES_ACTUAL.slice(0, -5)+" (a cobrar el 01/07)";
+const MES_ACTUAL = "agosto 2025"; const A_COBRAR = "septiembre 2025";
+const ULTIMO_IPC = "agosto 2025";
+document.getElementById("mes-actual").innerHTML = "Sueldo de "+MES_ACTUAL.slice(0, -5)+" (a cobrar en "+A_COBRAR.slice(0, -5)+")";
 const DescuentoOS = 0.06, DescuentoJubilacion = 0.13, DescuentoFCompensador = 0.003, DescuentoCajaComp = 0.045;
 var Rem = 1 - (DescuentoOS + DescuentoJubilacion + DescuentoFCompensador);
-var DescuentoAdemys = 0, DescuentoPresentismo = 0;
+var DescuentoPresentismo = 0;
 
 // const AumentoAsignaciones = 1.2375*1.25625*1.5641*1.5*1.8666667*1.68;
 // const ValorUMAF = 50*AumentoAsignaciones;
