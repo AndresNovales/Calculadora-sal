@@ -341,7 +341,7 @@ fetch('https://github.com/AndresNovales/Calculadora-sal/blob/main/ipc.json')
 
 
     var valor_items, mes = "";
-    fetch('https://github.com/AndresNovales/Calculadora-sal/blob/2c25e90f9acf954f8a45eb9e3667ca9dbc2e70e7/valoritems_minuscula.json')
+    fetch('https://github.com/AndresNovales/Calculadora-sal/blob/main/scriptv2.js')
         .then(response => response.json())
         .then(data => {
             valor_items = data;
