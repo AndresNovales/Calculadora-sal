@@ -3,7 +3,7 @@ const ULTIMO_IPC = "agosto 2025";
 document.getElementById("mes-actual").innerHTML = "Sueldo de "+MES_ACTUAL.slice(0, -5)+" (a cobrar en "+A_COBRAR.slice(0, -5)+")";
 const DescuentoOS = 0.06, DescuentoJubilacion = 0.13, DescuentoFCompensador = 0.003, DescuentoCajaComp = 0.045;
 var Rem = 1 - (DescuentoOS + DescuentoJubilacion + DescuentoFCompensador);
-var DescuentoPresentismo = 0;
+var DescuentoAdemys = 0, DescuentoPresentismo = 0;
 
 // const AumentoAsignaciones = 1.2375*1.25625*1.5641*1.5*1.8666667*1.68;
 // const ValorUMAF = 50*AumentoAsignaciones;
@@ -215,6 +215,9 @@ class Docente {
             this.descuentoFCompensador = -this.remus*DescuentoFCompensador; this.PCDescuento += DescuentoFCompensador;
             this.descuentoCajaComp = 0;
         }
+        this.descuentoAdemys = -(this.remus + this.cmg)*DescuentoAdemys; this.PCDescuento += DescuentoAdemys;
+        this.descuentoTotal = this.descuentoOS + this.descuentoJubilacion 
+                    + this.descuentoFCompensador + this.descuentoCajaComp + this.descuentoAdemys;	
 
         //para el bruto sumo todo
         this.sueldoBruto = this.remus + this.fonid + this.conectividad + this.adicionalEspecial + this.cmg + this.sumaFija;
@@ -329,7 +332,7 @@ class Docente {
 var docente = new Docente();
     
 var ipc;
-fetch('https://github.com/AndresNovales/Calculadora-sal/blob/main/ipc.json')
+fetch('https://raw.githubusercontent.com/juanwinograd/CalculadoraAdemys/main/ipc.json')
     .then(response => response.json())
     .then(data => {
         ipc = data;
@@ -338,7 +341,7 @@ fetch('https://github.com/AndresNovales/Calculadora-sal/blob/main/ipc.json')
 
 
     var valor_items, mes = "";
-    fetch('https://github.com/AndresNovales/Calculadora-sal/blob/main/scriptv2.js')
+    fetch('https://raw.githubusercontent.com/juanwinograd/CalculadoraAdemys/main/valoritems_minuscula.json')
         .then(response => response.json())
         .then(data => {
             valor_items = data;
@@ -467,28 +470,34 @@ var items = {
         tipo : 's'
     },
     descuentoOS : {
-        nombre : "Obra Social (6%)",
+        nombre : "Obra Social",
         tope : false,
         tipo : 'd',
         //descripcion :  "6% de las cifras remunerativa. Son dos items: 3% para la obra social y otro 3% para otorgar cobertura a jubilados."
     },
     descuentoJubilacion : {
-        nombre : "Jubilación (13%)",
+        nombre : "Jubilación",
         tope : false,
         tipo : 'd',
         //descripcion :  "13% de las cifras remunerativas. 11% del régimen general más un 2% del régimen especial docente."
     },
     descuentoFCompensador : {
-        nombre : "Fondo Compensador (0,3%)",
+        nombre : "Fondo Compensador",
         tope : false,
         tipo : 'd',
         //descripcion :  "0,3% de las cifras remunerativas. Es un seguro de vida obligatorio."
     },
     descuentoCajaComp : {
-        nombre : "Caja Complementaria (4,5%)",
+        nombre : "Caja Complementaria",
         tope : false,
         tipo : 'd',
         //descripcion :  "4,5% de las cifras remunerativas. Es un aporte extra para acceder a un complemento a la jubilación. Se aplica por defecto a los docentes de privada."
+    },
+    descuentoAdemys : {
+        nombre : "ADEMYS",
+        tope : false,
+        tipo : 'd',
+        //descripcion :  "1,5% de las cifras remunerativas y del C.M.G."
     },
     descuentoPresentismo : {
         nombre : "Desc. Adicional Salarial",
@@ -726,14 +735,14 @@ function elegir_terciaria(evt) {
     docente.cargos[n].horas = -1;  document.getElementById("horas"+n).style.display = "none";
     var selectorCargo = document.getElementById(id);
     
-    // director, vice y regente los trato como jc
+    // director, vice, regente los trato como jc
     if (selectorCargo.selectedIndex < 4 ) {
         docente.cargos[n].jornada = "JC";
         if (selectorCargo.selectedIndex == 1 ) {docente.cargos[n].plus = 0.30;	}
         else {docente.cargos[n].plus = 0.15;}
     }
     //horas catedra			
-    else if (selectorCargo.selectedIndex == 9) {
+    else if (selectorCargo.selectedIndex == 11) {
         docente.cargos[n].plus = 0;
         docente.cargos[n].jornada = "HorasT"
         document.getElementById("horas"+n).style.display = "inline";
@@ -770,7 +779,15 @@ function elegir_antiguedad() {
         calcular(0);
     }
 }
-
+function elegir_afiliado() {
+    if (document.getElementById("afiliado").checked) {
+        DescuentoAdemys = 0.015;
+    }
+    else {
+        DescuentoAdemys = 0;
+    }
+    calcular(0);
+}    
 function elegir_presentismo() {
     if (document.getElementById("presentismo").checked) {
         DescuentoPresentismo = 0;
@@ -838,7 +855,7 @@ function calcular(n) {
         document.getElementById('neto').innerHTML = Intl.NumberFormat("es-AR", {style: "currency", currency: "ARS", maximumFractionDigits:0}).format(docente.sueldoNeto);
 
         //AGUINALDO
-        document.getElementById('sac').innerHTML = Intl.NumberFormat("es-AR", {style: "currency", currency: "ARS", maximumFractionDigits:0}).format(docente.aguinaldo);
+        // document.getElementById('sac').innerHTML = Intl.NumberFormat("es-AR", {style: "currency", currency: "ARS", maximumFractionDigits:0}).format(docente.aguinaldo);
 
         //Si está activado el detalle lo muestro
         if (mostrarDetalle == true) {            mostrar_detalle();        }
@@ -859,17 +876,17 @@ function mostrar_detalle() {
     p.setAttribute("id","leyenda");
     p.style.fontSize = "14px"; p.style.fontStyle = "italic";
     p.style.lineHeight = "1.5";
-    p.innerText = "Se muestra el total que deberías cobrar por la suma de los cargos que ingresaste";
+    p.innerText = "Se muestra el total que deberías cobrar por la suma de tus cargos, teniendo en cuenta los topes en cada ítem.";
     divDetalle.appendChild(p);
 
     titulo1 = document.createElement("h4");
-    titulo1.innerHTML = "Ítems remunerativos";
+    titulo1.innerHTML = "Cifras remunerativas";
     divDetalle.appendChild(titulo1);
     var remus = document.createElement("dl");
     divDetalle.appendChild(remus);
 
     titulo2 = document.createElement("h4");
-    titulo2.innerHTML = "Ítems no remunerativos";
+    titulo2.innerHTML = "Cifras no remunerativas";
     divDetalle.appendChild(titulo2);
     var noremus = document.createElement("dl");
     divDetalle.appendChild(noremus);
@@ -880,11 +897,11 @@ function mostrar_detalle() {
     var descuentos = document.createElement("dl");
     divDetalle.appendChild(descuentos);
 
-   // titulo4 = document.createElement("h4");
-    // titulo4.innerHTML = "Asignaciones Familiares";
-// divDetalle.appendChild(titulo4);
- // '  var asignaciones = document.createElement("dl");
-//  '  divDetalle.appendChild(asignaciones);
+    titulo4 = document.createElement("h4");
+    titulo4.innerHTML = "Asignaciones Familiares";
+    divDetalle.appendChild(titulo4);
+    var asignaciones = document.createElement("dl");
+    divDetalle.appendChild(asignaciones);
 
     
     for (item of docente.detalle()) {
@@ -923,12 +940,12 @@ function activar_detalle() {
         document.getElementById("resultado").appendChild(divDetalle);
         mostrar_detalle()
         mostrarDetalle = true;
-        document.getElementById("botondetalle").innerHTML = "Ocultar conceptos del salario"
+        document.getElementById("botondetalle").innerHTML = "Ocultar detalle"
     }
     else {
         if (document.getElementById("detalle") != null) {document.getElementById("detalle").remove();}
         mostrarDetalle = false;
-        document.getElementById("botondetalle").innerHTML = "Ver conceptos del salario"
+        document.getElementById("botondetalle").innerHTML = "Mostrar detalle"
     }
 }
 function agregar_cargo() {
@@ -976,7 +993,7 @@ function agregar_asignaciones() {
     }
     else {
         document.getElementById("asignaciones").style.display = "none";
-       // document.getElementById("botonasignaciones").innerHTML = "Asignaciones familiares";
+        document.getElementById("botonasignaciones").innerHTML = "Asignaciones familiares";
         //document.getElementById("textoasignaciones").innerHTML = "Asignaciones familiares";
         mostrarAsignaciones = false;
         calcular(0);
