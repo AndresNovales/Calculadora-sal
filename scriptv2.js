@@ -230,8 +230,8 @@ class Docente {
         this.sueldoNeto = this.sueldoBruto + this.descuentoTotal;
 
         //AGUINALDO
-        this.aguinaldo = (this.remus*(1-this.PCDescuento))/2 + this.cmg/2;
-        if (this.antiguedad < 0.5) this.aguinaldo = this.aguinaldo + this.mdm/2;
+        // this.aguinaldo = (this.remus*(1-this.PCDescuento))/2 + this.cmg/2;
+        // if (this.antiguedad < 0.5) this.aguinaldo = this.aguinaldo + this.mdm/2;
     }
 
     //suma todos los cargos de un docente
@@ -273,16 +273,16 @@ class Docente {
     sumar_asignaciones() {
         let franja;
         let sueldo = this.sueldoBruto;
-        if (sueldo >= TopesAsignaciones[2]*this.valoresJC["valorUMAF"]) {
+        if (sueldo >= TopesAsignaciones[2]*this.valoresJC["valorUMAF"]/50) {
             for (let asignacion in asignaciones) { 
                 this[asignacion] = MontosAsignaciones[asignacion][3]*asignaciones[asignacion]; 
                 items[asignacion].descripcion = "Superaste el tope puesto por la nueva ley. Si venías cobrando de antes, tenés que seguir cobrando el mismo monto"
             }
         }
         else {
-            if (sueldo >= TopesAsignaciones[1]*this.valoresJC["valorUMAF"])
+            if (sueldo >= TopesAsignaciones[1]*this.valoresJC["valorUMAF"]/50)
                 franja = 2;
-            else if (sueldo >= TopesAsignaciones[0]*this.valoresJC["valorUMAF"])
+            else if (sueldo >= TopesAsignaciones[0]*this.valoresJC["valorUMAF"]/50)
                 franja = 1;
             else
                 franja = 0;
@@ -332,7 +332,7 @@ class Docente {
 var docente = new Docente();
     
 var ipc;
-fetch('https://raw.githubusercontent.com/juanwinograd/CalculadoraAdemys/main/ipc.json')
+fetch('ipc.json')
     .then(response => response.json())
     .then(data => {
         ipc = data;
@@ -340,33 +340,33 @@ fetch('https://raw.githubusercontent.com/juanwinograd/CalculadoraAdemys/main/ipc
     .catch(error => console.error('Error loading JSON:', error));
 
 
-    var valor_items, mes = "";
-    fetch('https://raw.githubusercontent.com/juanwinograd/CalculadoraAdemys/main/valoritems_minuscula.json')
-        .then(response => response.json())
-        .then(data => {
-            valor_items = data;
-            var select = document.createElement('select');
-            select.setAttribute("class","tdForm");
-            select.setAttribute("id","selector_mes");
-            const optionElement = document.createElement("option");  
-            optionElement.textContent = 'Seleccionar mes'; 
-            optionElement.value = ''; 
-            select.appendChild(optionElement);
-            for (let i = Object.keys(valor_items).length - 2; i >= 1; i--) {
-                let mes = Object.keys(valor_items)[i];
-                const optionElement = document.createElement("option"); 
-                optionElement.value = mes; 
-                optionElement.textContent = mes; 
-                select.appendChild(optionElement); 
-            };
-            document.getElementById("contenedor-mes").appendChild(select);
-            select.setAttribute("onchange","elegir_mes(event)");
-    
-            //fijo el mes en el que se carga la página
-            docente.fijar_valoresJC(MES_ACTUAL);
-            // mostrar_caida(mes)
-        })
-        .catch(error => console.error('Error loading JSON:', error));
+var valor_items, mes = "";
+fetch('valoritems_minuscula.json')
+    .then(response => response.json())
+    .then(data => {
+        valor_items = data;
+        var select = document.createElement('select');
+        select.setAttribute("class","tdForm");
+        select.setAttribute("id","selector_mes");
+        const optionElement = document.createElement("option");  
+        optionElement.textContent = 'Seleccionar mes'; 
+        optionElement.value = ''; 
+        select.appendChild(optionElement);
+        for (let i = Object.keys(valor_items).length - 2; i >= 0; i--) {
+            let mes = Object.keys(valor_items)[i];
+            const optionElement = document.createElement("option"); 
+            optionElement.value = mes; 
+            optionElement.textContent = mes; 
+            select.appendChild(optionElement); 
+        };
+        document.getElementById("contenedor-mes").appendChild(select);
+        select.setAttribute("onchange","elegir_mes(event)");
+
+        //fijo el mes en el que se carga la página
+        docente.fijar_valoresJC(MES_ACTUAL);
+        // mostrar_caida(mes)
+    })
+    .catch(error => console.error('Error loading JSON:', error));
 
 var items = {
     basico : {
@@ -624,8 +624,8 @@ function elegir_especial(evt) {
     //vice o secratario
     else if (selectorCargo.selectedIndex < 4) { docente.cargos[n].plus = 0.15; docente.cargos[n].jornada = "JC";}
     //acdm 40
-    else if (selectorCargo.selectedIndex < 6) { docente.cargos[n].plus = 0; docente.cargos[n].jornada = "JC";}
-    //ILSE
+    else if (selectorCargo.selectedIndex < 9) { docente.cargos[n].plus = 0; docente.cargos[n].jornada = "JC";}
+    //M Especiales, lenguaje de señas
     else if (selectorCargo.selectedIndex >= selectorCargo.length-2) {				
         docente.cargos[n].jornada = "HorasM";
         docente.cargos[n].plus = 0;
@@ -1020,12 +1020,12 @@ function mostrar_caida(mes) {
     var resultadoPerdida = document.getElementById("resultado-perdida");
     while (resultadoPerdida.firstChild) resultadoPerdida.removeChild(resultadoPerdida.firstChild);
 
-    var inflacion = ipc[ULTIMO_IPC]/ipc[mes]; //ipc[mes] es el IPC del mes anterior al que se seleccionó
+    var inflacion = ipc[ULTIMO_IPC]/ipc[mes]; //ipc[mes] es el IPC que se seleccionó
     if (docente.calculado) {
         var docente_ = docente.clone(mes);
         var sueldoInflacionado = docente_.sueldoNeto*inflacion;
         var perdida = (-1+docente.sueldoNeto/sueldoInflacionado)*100;
-        var aumento_necesario = sueldoInflacionado/docente.sueldoNeto-1;
+        // var aumento_necesario = sueldoInflacionado/docente.sueldoNeto-1;
         // console.log("caída: ",perdida);
         // console.log("aumento necesario: ",aumento_necesario);
     
@@ -1051,7 +1051,7 @@ function mostrar_caida(mes) {
         
         var p5 = document.createElement('p');
         p5.innerHTML =  "*Fuente: Instituto de Estadística y Censos de la Ciudad de Buenos Aires";
-        if (ipc[A_COBRAR] == undefined) {p5.innerHTML +=  ". (Sin contemplar la inflación de "+MES_ACTUAL+" que aún no se publicó.)";}
+        if (ipc[A_COBRAR] == undefined) {p5.innerHTML +=  ". (Sin contemplar la inflación de "+A_COBRAR+" que aún no se publicó.)";}
         p5.style.fontSize = "15px"; p5.style.fontStyle = "italic";
         document.getElementById("resultado-perdida").appendChild(p5);
     }
